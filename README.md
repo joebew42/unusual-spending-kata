@@ -29,5 +29,7 @@ The Credit Card Company
 
 # TODO
 
-- [F] Essence: Triggers an alarm when an amount is at least the 50% more than another one.
-- [F] Essence: Triggers an alarm when an amount per category is at least the 50% more than another one.
+- [R] Express better the conditional in `UnusualSpending#evaluate`
+- [F] Essence: Send a notification with the category that has the current amount at least the 50% more of the previous one.
+    - [R] Learning: Replace the `Trigger` with a collection of `Category`
+- [F] Essence: Send a notification with the list of categories that have the current amount at least the 50% more of the previous one.
