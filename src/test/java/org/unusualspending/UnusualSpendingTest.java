@@ -6,7 +6,7 @@ import static org.junit.Assert.assertFalse;
 
 public class UnusualSpendingTest {
     @Test
-    public void do_not_trigger_the_alarm_when_the_current_amount_is_not_the_50_percent_more_of_the_previous_one() {
+    public void do_not_triggers_the_alarm_when_the_current_amount_is_not_the_50_percent_more_of_the_previous_one() {
         Trigger trigger = new Trigger();
         Alarm alarm = new SpyAlarm(trigger);
 
