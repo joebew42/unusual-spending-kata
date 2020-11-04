@@ -30,6 +30,4 @@ The Credit Card Company
 # TODO
 
 - [F] Essence: Triggers an alarm when an amount is at least the 50% more than another one.
-    - [F] No alarm is triggered when the threshold of 50% is not met
-    - [F] An alarm is triggered when the threshold of 50% is met
 - [F] Essence: Triggers an alarm when an amount per category is at least the 50% more than another one.
