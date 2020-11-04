@@ -29,5 +29,5 @@ The Credit Card Company
 
 # TODO
 
-- [F] Essence: Triggers an alarm when the current amount is at least the 50% more than the previous one.
-- [F] Essence: Triggers an alarm when the current amount per category is at least the 50% more than the previous one.
+- [F] Essence: Triggers an alarm when an amount is at least the 50% more than another one.
+- [F] Essence: Triggers an alarm when an amount per category is at least the 50% more than another one.
