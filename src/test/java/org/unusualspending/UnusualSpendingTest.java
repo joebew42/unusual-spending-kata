@@ -11,10 +11,7 @@ public class UnusualSpendingTest {
         Boolean hasBeenTriggered = FALSE;
         Alarm alarm = new SpyAlarm(hasBeenTriggered);
 
-        int previousAmount = 2;
-        int currentAmount = 2;
-
-        new UnusualSpending(alarm).evaluate(currentAmount, previousAmount);
+        new UnusualSpending(alarm).evaluate(2, 2);
 
         assertFalse(hasBeenTriggered);
     }
