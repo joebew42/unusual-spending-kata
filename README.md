@@ -31,4 +31,5 @@ The Credit Card Company
 
 - [F] Essence: Send a notification with the category that has the current amount at least the 50% more of the previous one.
     - Verifies that the `probe` is called with a specific category
+    - Maybe rename `UnusualSpending#evaluate` to `UnsusualSpending#evaluateExpenses`
 - [F] Essence: Send a notification with the list of categories that have the current amount at least the 50% more of the previous one.
