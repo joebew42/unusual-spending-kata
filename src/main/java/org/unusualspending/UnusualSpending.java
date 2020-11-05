@@ -1,15 +1,15 @@
 package org.unusualspending;
 
 public class UnusualSpending {
-    private Alarm alarm;
+    private Notifier notifier;
 
-    public UnusualSpending(Alarm alarm) {
-        this.alarm = alarm;
+    public UnusualSpending(Notifier notifier) {
+        this.notifier = notifier;
     }
 
     public void evaluate(int currentAmount, int previousAmount) {
         if (isAtLeast50percentMoreThan(previousAmount, currentAmount)) {
-            alarm.sendNotification();
+            notifier.send();
         }
     }
 

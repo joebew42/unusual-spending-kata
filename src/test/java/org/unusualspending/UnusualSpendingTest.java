@@ -8,51 +8,51 @@ import static org.junit.Assert.assertTrue;
 
 public class UnusualSpendingTest {
 
-    private Trigger trigger;
+    private Probe probe;
     private UnusualSpending unusualSpending;
 
     @Before
     public void setUp() {
-        trigger = new Trigger();
-        unusualSpending = new UnusualSpending(new SpyAlarm(trigger));
+        probe = new Probe();
+        unusualSpending = new UnusualSpending(new SpyNotifier(probe));
     }
 
     @Test
-    public void do_not_triggers_the_alarm_when_the_current_amount_is_not_the_50_percent_more_of_the_previous_one() {
+    public void do_not_call_the_notifier_when_the_current_amount_is_not_the_50_percent_more_of_the_previous_one() {
         unusualSpending.evaluate(2, 2);
 
-        assertFalse(trigger.hasBeenTriggered());
+        assertFalse(probe.hasBeenCalled());
     }
 
     @Test
-    public void triggers_the_alarm_when_the_current_amount_is_at_least_the_50_percent_more_of_the_previous_one() {
+    public void call_the_notifier_when_the_current_amount_is_at_least_the_50_percent_more_of_the_previous_one() {
         unusualSpending.evaluate(3, 2);
 
-        assertTrue(trigger.hasBeenTriggered());
+        assertTrue(probe.hasBeenCalled());
     }
 
-    private static class SpyAlarm implements Alarm {
-        private final Trigger trigger;
+    private static class SpyNotifier implements Notifier {
+        private final Probe probe;
 
-        public SpyAlarm(Trigger trigger) {
-            this.trigger = trigger;
+        public SpyNotifier(Probe probe) {
+            this.probe = probe;
         }
 
         @Override
-        public void sendNotification() {
-            trigger.turnOn();
+        public void send() {
+            probe.call();
         }
     }
 
-    private static class Trigger {
-        private boolean triggered = false;
+    private static class Probe {
+        private boolean called = false;
 
-        public boolean hasBeenTriggered() {
-            return triggered;
+        public boolean hasBeenCalled() {
+            return called;
         }
 
-        public void turnOn() {
-            triggered = true;
+        public void call() {
+            called = true;
         }
     }
 }
