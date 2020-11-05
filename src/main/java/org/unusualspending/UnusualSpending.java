@@ -8,8 +8,12 @@ public class UnusualSpending {
     }
 
     public void evaluate(int currentAmount, int previousAmount) {
-        if (currentAmount >= previousAmount + previousAmount / 2) {
+        if (isAtLeast50percentMoreThan(previousAmount, currentAmount)) {
             alarm.sendNotification();
         }
+    }
+
+    private boolean isAtLeast50percentMoreThan(int amount, int amountToCompare) {
+        return amountToCompare >= amount + amount / 2;
     }
 }

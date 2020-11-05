@@ -29,7 +29,6 @@ The Credit Card Company
 
 # TODO
 
-- [R] Express better the conditional in `UnusualSpending#evaluate`
 - [F] Essence: Send a notification with the category that has the current amount at least the 50% more of the previous one.
     - [R] Learning: Replace the `Trigger` with a collection of `Category`
 - [F] Essence: Send a notification with the list of categories that have the current amount at least the 50% more of the previous one.
