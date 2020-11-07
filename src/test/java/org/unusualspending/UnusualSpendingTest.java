@@ -27,7 +27,7 @@ public class UnusualSpendingTest {
 
     @Test
     public void call_the_notifier_when_the_current_spending_is_at_least_the_50_percent_more_of_the_previous_one() {
-        unusualSpending.evaluate(new Spending(2, "golf"), new Spending(3, "golf"));
+        unusualSpending.evaluate(new Spending(3, "golf"), new Spending(2, "golf"));
 
         assertTrue(probe.hasBeenCalledWith(List.of(new Spending(3, "golf"))));
     }

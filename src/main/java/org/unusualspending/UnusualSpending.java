@@ -1,17 +1,17 @@
 package org.unusualspending;
 
-import static java.util.Arrays.asList;
+import java.util.List;
 
 public class UnusualSpending {
-    private Notifier notifier;
+    private final Notifier notifier;
 
     public UnusualSpending(Notifier notifier) {
         this.notifier = notifier;
     }
 
-    public void evaluate(Spending previous, Spending current) {
-        if (isAtLeast50percentMoreThan(previous.amount(), current.amount())) {
-            notifier.notifyFor(asList(current));
+    public void evaluate(Spending actual, Spending past) {
+        if (isAtLeast50percentMoreThan(past.amount(), actual.amount())) {
+            notifier.notifyFor(List.of(actual));
         }
     }
 
