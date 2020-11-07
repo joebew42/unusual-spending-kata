@@ -1,6 +1,7 @@
 package org.unusualspending;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -20,8 +21,30 @@ public class UnusualSpendingTest {
         unusualSpending = new UnusualSpending(new SpyNotifier(probe));
     }
 
+    @Test @Ignore("WIP: Introducing the concept of Payments ...")
+    public void do_not_send_any_notification_when_payments_by_spending_are_not_the_50_percent_more_of_the_last_ones() {
+        List<Payment> payments = asList(
+                new Payment(2, "golf", "Playing Golf with friends"),
+                new Payment(1, "golf", "Drink at Golf court"),
+                new Payment(1, "entertainment", "Popcorn"),
+                new Payment(3, "entertainment", "Movie Theater"),
+                new Payment(3, "entertainment", "Movie Theater")
+        );
+
+        List<Payment> paymentsOfTheLastMonth = asList(
+                new Payment(2, "golf", "Playing Golf with friends"),
+                new Payment(1, "golf", "Drink at Golf court"),
+                new Payment(3, "entertainment", "Movie Theater"),
+                new Payment(3, "entertainment", "Movie Theater")
+        );
+
+        unusualSpending.evaluateByPayments(payments, paymentsOfTheLastMonth);
+
+        assertTrue(probe.hasNotBeenCalled());
+    }
+
     @Test
-    public void do_not_send_any_notification_if_no_spendings_are_the_50_percent_more_of_the_past_ones() {
+    public void do_not_send_any_notification_when_spendings_are_not_the_50_percent_more_of_the_past_ones() {
         List<Spending> spendings = asList(
                 new Spending(3, "golf"),
                 new Spending(7, "entertainment")

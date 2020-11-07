@@ -11,6 +11,10 @@ public class UnusualSpending {
         this.notifier = notifier;
     }
 
+    public void evaluateByPayments(List<Payment> payments, List<Payment> paymentsOfTheLastMonth) {
+        throw new RuntimeException("Not yet implemented");
+    }
+
     public void evaluate(List<Spending> actualSpendings, List<Spending> pastSpendings) {
         List<Spending> spendings = allSpendingsThatAreAtLeastThe50percentMoreThan(pastSpendings, actualSpendings);
         if (!spendings.isEmpty()) {

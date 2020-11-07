@@ -29,6 +29,10 @@ The Credit Card Company
 
 # TODO
 
+- [F] Essence: Introduce the concept of Payments
+    - Do we need a `Payments` class to delegate methods like `groupBySpending`?
+- [R] Should we have to introduce the class `Spendings` to describe Payments grouped by spending?
+    - Then the private method `UnsualSpending#findSpending` should be moved to that class
 - [F] Essence: Send a notification with a Message that contains all the spending with an amount at least the 50% more of the previous one.
 [F] Essence: Introduce the concept of the User
 
