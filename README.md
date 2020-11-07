@@ -29,7 +29,8 @@ The Credit Card Company
 
 # TODO
 
-- [F] Essence: Send a notification with a Message that contains the spending that have the current amount at least the 50% more of the previous one.
-- [F] Essence: Send a notification with a Message that contains all the categories that have the current amount at least the 50% more of the previous one.
-- [F] Essence: Introduce the concept of the User
+- [F] Essence: Send a notification that contains all the spending with an amount at least the 50% more of the previous one.
+- [F] Essence: Send a notification with a Message that contains the spending with amount at least the 50% more of the previous one.
+- [F] Essence: Send a notification with a Message that contains all the spending with an amount at least the 50% more of the previous one.
+[F] Essence: Introduce the concept of the User
 
