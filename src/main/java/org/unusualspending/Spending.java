@@ -19,6 +19,10 @@ public class Spending {
         return amount;
     }
 
+    boolean isAtLeast50percentMoreThan(Spending past) {
+        return amount() >= past.amount() + past.amount() / 2;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
