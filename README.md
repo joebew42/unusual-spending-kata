@@ -30,6 +30,7 @@ The Credit Card Company
 # TODO
 
 - [F] Essence: Send a notification with the category that has the current amount at least the 50% more of the previous one.
-    - Verifies that the `probe` is called with a specific category
-    - Maybe rename `UnusualSpending#evaluate` to `UnsusualSpending#evaluateExpenses`
+    - [R] Generalize `Probe` to take any type of variable, not only `Category`
+    - [R] Find better names for `current` and `previous` variables in `UnusualSpending#evaluate`
+    - [R] Maybe rename `UnusualSpending#evaluate` to `UnsusualSpending#evaluateExpenses`
 - [F] Essence: Send a notification with the list of categories that have the current amount at least the 50% more of the previous one.

@@ -3,8 +3,7 @@ package org.unusualspending;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class UnusualSpendingTest {
 
@@ -21,14 +20,14 @@ public class UnusualSpendingTest {
     public void do_not_call_the_notifier_when_the_current_amount_is_not_the_50_percent_more_of_the_previous_one() {
         unusualSpending.evaluate(new Category(2), new Category(2));
 
-        assertFalse(probe.hasBeenCalled());
+        assertFalse(probe.hasBeenCalledWith(new Category(2)));
     }
 
     @Test
     public void call_the_notifier_when_the_current_amount_is_at_least_the_50_percent_more_of_the_previous_one() {
         unusualSpending.evaluate(new Category(2), new Category(3));
 
-        assertTrue(probe.hasBeenCalled());
+        assertTrue(probe.hasBeenCalledWith(new Category(3)));
     }
 
     private static class SpyNotifier implements Notifier {
@@ -39,20 +38,25 @@ public class UnusualSpendingTest {
         }
 
         @Override
-        public void send() {
-            probe.call();
+        public void notifyFor(Category category) {
+            probe.callWith(category);
         }
     }
 
     private static class Probe {
-        private boolean called = false;
+        private Category calledWith = null;
 
-        public boolean hasBeenCalled() {
-            return called;
+        public void callWith(Category category) {
+            calledWith = category;
         }
 
-        public void call() {
-            called = true;
+        public boolean hasBeenCalledWith(Category category) {
+            if (calledWith == null) {
+                return false;
+            }
+
+            assertEquals(category, calledWith);
+            return true;
         }
     }
 }

@@ -9,7 +9,7 @@ public class UnusualSpending {
 
     public void evaluate(Category previous, Category current) {
         if (isAtLeast50percentMoreThan(previous.amount(), current.amount())) {
-            notifier.send();
+            notifier.notifyFor(current);
         }
     }
 

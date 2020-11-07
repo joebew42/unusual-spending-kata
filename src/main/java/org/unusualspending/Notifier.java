@@ -1,5 +1,5 @@
 package org.unusualspending;
 
 public interface Notifier {
-    void send();
+    void notifyFor(Category category);
 }
