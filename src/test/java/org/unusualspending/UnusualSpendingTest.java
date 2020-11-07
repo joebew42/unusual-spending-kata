@@ -17,14 +17,14 @@ public class UnusualSpendingTest {
     }
 
     @Test
-    public void do_not_call_the_notifier_when_the_current_amount_is_not_the_50_percent_more_of_the_previous_one() {
+    public void do_not_call_the_notifier_when_the_current_spending_is_not_the_50_percent_more_of_the_previous_one() {
         unusualSpending.evaluate(new Spending(2, "golf"), new Spending(2, "golf"));
 
         assertFalse(probe.hasBeenCalledWith(new Spending(2, "golf")));
     }
 
     @Test
-    public void call_the_notifier_when_the_current_amount_is_at_least_the_50_percent_more_of_the_previous_one() {
+    public void call_the_notifier_when_the_current_spending_is_at_least_the_50_percent_more_of_the_previous_one() {
         unusualSpending.evaluate(new Spending(2, "golf"), new Spending(3, "golf"));
 
         assertTrue(probe.hasBeenCalledWith(new Spending(3, "golf")));
