@@ -15,7 +15,7 @@ public class UnusualSpending {
         throw new RuntimeException("Not yet implemented");
     }
 
-    public void evaluate(List<Spending> spendings, List<Spending> pastSpendings) {
+    public void evaluateBySpendings(List<Spending> spendings, List<Spending> pastSpendings) {
         List<Spending> unusualSpendings = allSpendingsThatAreAtLeastThe50percentMoreThan(pastSpendings, spendings);
         if (!unusualSpendings.isEmpty()) {
             notifier.notifyFor(unusualSpendings);

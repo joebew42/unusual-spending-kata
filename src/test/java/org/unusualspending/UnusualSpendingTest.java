@@ -55,7 +55,7 @@ public class UnusualSpendingTest {
                 new Spending(6, "entertainment")
         );
 
-        unusualSpending.evaluate(spendings, pastSpendings);
+        unusualSpending.evaluateBySpendings(spendings, pastSpendings);
 
         assertTrue(probe.hasNotBeenCalled());
     }
@@ -74,7 +74,7 @@ public class UnusualSpendingTest {
                 new Spending(5, "gardening")
         );
 
-        unusualSpending.evaluate(spendings, pastSpendings);
+        unusualSpending.evaluateBySpendings(spendings, pastSpendings);
 
         assertTrue(probe.hasBeenCalledWith(asList(
                 new Spending(3, "golf"),
