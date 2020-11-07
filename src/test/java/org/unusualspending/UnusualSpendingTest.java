@@ -7,12 +7,12 @@ import static org.junit.Assert.*;
 
 public class UnusualSpendingTest {
 
-    private Probe probe;
+    private Probe<Category> probe;
     private UnusualSpending unusualSpending;
 
     @Before
     public void setUp() {
-        probe = new Probe();
+        probe = new Probe<>();
         unusualSpending = new UnusualSpending(new SpyNotifier(probe));
     }
 
@@ -31,9 +31,9 @@ public class UnusualSpendingTest {
     }
 
     private static class SpyNotifier implements Notifier {
-        private final Probe probe;
+        private final Probe<Category> probe;
 
-        public SpyNotifier(Probe probe) {
+        public SpyNotifier(Probe<Category> probe) {
             this.probe = probe;
         }
 
@@ -43,19 +43,19 @@ public class UnusualSpendingTest {
         }
     }
 
-    private static class Probe {
-        private Category calledWith = null;
+    private static class Probe<T> {
+        private T calledWith = null;
 
-        public void callWith(Category category) {
-            calledWith = category;
+        public void callWith(T argument) {
+            calledWith = argument;
         }
 
-        public boolean hasBeenCalledWith(Category category) {
+        public boolean hasBeenCalledWith(T argument) {
             if (calledWith == null) {
                 return false;
             }
 
-            assertEquals(category, calledWith);
+            assertEquals(argument, calledWith);
             return true;
         }
     }
