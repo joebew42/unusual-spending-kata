@@ -5,7 +5,9 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class UnusualSpendingTest {
 
@@ -19,17 +21,42 @@ public class UnusualSpendingTest {
     }
 
     @Test
-    public void do_not_call_the_notifier_when_the_current_spending_is_not_the_50_percent_more_of_the_previous_one() {
-        unusualSpending.evaluate(new Spending(2, "golf"), new Spending(2, "golf"));
+    public void do_not_send_any_notification_if_no_spendings_are_the_50_percent_more_of_the_past_ones() {
+        List<Spending> spendings = asList(
+                new Spending(3, "golf"),
+                new Spending(7, "entertainment")
+        );
 
-        assertFalse(probe.hasBeenCalledWith(List.of(new Spending(2, "golf"))));
+        List<Spending> pastSpendings = asList(
+                new Spending(3, "golf"),
+                new Spending(6, "entertainment")
+        );
+
+        unusualSpending.evaluate(spendings, pastSpendings);
+
+        assertTrue(probe.hasNotBeenCalled());
     }
 
     @Test
-    public void call_the_notifier_when_the_current_spending_is_at_least_the_50_percent_more_of_the_previous_one() {
-        unusualSpending.evaluate(new Spending(3, "golf"), new Spending(2, "golf"));
+    public void send_notification_for_the_spendings_that_are_the_50_percent_more_of_the_past_ones() {
+        List<Spending> spendings = asList(
+                new Spending(3, "golf"),
+                new Spending(6, "entertainment"),
+                new Spending(5, "gardening")
+        );
 
-        assertTrue(probe.hasBeenCalledWith(List.of(new Spending(3, "golf"))));
+        List<Spending> pastSpendings = asList(
+                new Spending(2, "golf"),
+                new Spending(4, "entertainment"),
+                new Spending(5, "gardening")
+        );
+
+        unusualSpending.evaluate(spendings, pastSpendings);
+
+        assertTrue(probe.hasBeenCalledWith(asList(
+                new Spending(3, "golf"),
+                new Spending(6, "entertainment")
+        )));
     }
 
     private static class SpyNotifier implements Notifier {
@@ -59,6 +86,10 @@ public class UnusualSpendingTest {
 
             assertEquals(argument, calledWith);
             return true;
+        }
+
+        public boolean hasNotBeenCalled() {
+            return calledWith == null;
         }
     }
 }

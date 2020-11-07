@@ -11,6 +11,10 @@ public class Spending {
         this.name = name;
     }
 
+    public String name() {
+        return name;
+    }
+
     public int amount() {
         return amount;
     }

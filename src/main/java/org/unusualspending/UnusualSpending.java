@@ -1,6 +1,8 @@
 package org.unusualspending;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class UnusualSpending {
     private final Notifier notifier;
@@ -9,13 +11,31 @@ public class UnusualSpending {
         this.notifier = notifier;
     }
 
-    public void evaluate(Spending actual, Spending past) {
-        if (isAtLeast50percentMoreThan(past.amount(), actual.amount())) {
-            notifier.notifyFor(List.of(actual));
+    public void evaluate(List<Spending> actualSpendings, List<Spending> pastSpendings) {
+        List<Spending> spendings = allSpendingsThatAreAtLeastThe50percentMoreThan(pastSpendings, actualSpendings);
+        if (!spendings.isEmpty()) {
+            notifier.notifyFor(spendings);
         }
+    }
+
+    private List<Spending> allSpendingsThatAreAtLeastThe50percentMoreThan(List<Spending> pastSpendings, List<Spending> actualSpendings) {
+        List<Spending> spendings = new ArrayList<>();
+        for (Spending actualSpending : actualSpendings) {
+            Optional<Spending> pastSpending = findSpending(actualSpending.name(), pastSpendings);
+            if (pastSpending.isPresent() && isAtLeast50percentMoreThan(pastSpending.get().amount(), actualSpending.amount())) {
+                spendings.add(actualSpending);
+            }
+        }
+        return spendings;
     }
 
     private boolean isAtLeast50percentMoreThan(int amount, int amountToCompare) {
         return amountToCompare >= amount + amount / 2;
+    }
+
+    private Optional<Spending> findSpending(String name, List<Spending> spendings) {
+        return spendings.stream()
+                .filter(spending -> spending.name().equals(name))
+                .findFirst();
     }
 }
