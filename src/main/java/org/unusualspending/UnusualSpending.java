@@ -15,22 +15,22 @@ public class UnusualSpending {
         throw new RuntimeException("Not yet implemented");
     }
 
-    public void evaluate(List<Spending> actualSpendings, List<Spending> pastSpendings) {
-        List<Spending> spendings = allSpendingsThatAreAtLeastThe50percentMoreThan(pastSpendings, actualSpendings);
-        if (!spendings.isEmpty()) {
-            notifier.notifyFor(spendings);
+    public void evaluate(List<Spending> spendings, List<Spending> pastSpendings) {
+        List<Spending> unusualSpendings = allSpendingsThatAreAtLeastThe50percentMoreThan(pastSpendings, spendings);
+        if (!unusualSpendings.isEmpty()) {
+            notifier.notifyFor(unusualSpendings);
         }
     }
 
-    private List<Spending> allSpendingsThatAreAtLeastThe50percentMoreThan(List<Spending> pastSpendings, List<Spending> actualSpendings) {
-        List<Spending> spendings = new ArrayList<>();
-        for (Spending actualSpending : actualSpendings) {
+    private List<Spending> allSpendingsThatAreAtLeastThe50percentMoreThan(List<Spending> pastSpendings, List<Spending> spendings) {
+        List<Spending> unusualSpendings = new ArrayList<>();
+        for (Spending actualSpending : spendings) {
             Optional<Spending> pastSpending = findSpending(actualSpending.name(), pastSpendings);
             if (pastSpending.isPresent() && actualSpending.isAtLeast50percentMoreThan(pastSpending.get())) {
-                spendings.add(actualSpending);
+                unusualSpendings.add(actualSpending);
             }
         }
-        return spendings;
+        return unusualSpendings;
     }
 
     private Optional<Spending> findSpending(String name, List<Spending> spendings) {
