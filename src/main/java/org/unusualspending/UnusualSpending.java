@@ -22,15 +22,15 @@ public class UnusualSpending {
         List<Spending> spendings = new ArrayList<>();
         for (Spending actualSpending : actualSpendings) {
             Optional<Spending> pastSpending = findSpending(actualSpending.name(), pastSpendings);
-            if (pastSpending.isPresent() && isAtLeast50percentMoreThan(pastSpending.get().amount(), actualSpending.amount())) {
+            if (pastSpending.isPresent() && isAtLeast50percentMoreThan(pastSpending.get(), actualSpending)) {
                 spendings.add(actualSpending);
             }
         }
         return spendings;
     }
 
-    private boolean isAtLeast50percentMoreThan(int amount, int amountToCompare) {
-        return amountToCompare >= amount + amount / 2;
+    private boolean isAtLeast50percentMoreThan(Spending past, Spending actual) {
+        return actual.amount() >= past.amount() + past.amount() / 2;
     }
 
     private Optional<Spending> findSpending(String name, List<Spending> spendings) {
