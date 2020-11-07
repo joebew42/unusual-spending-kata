@@ -2,11 +2,11 @@ package org.unusualspending;
 
 import java.util.Objects;
 
-public class Category {
+public class Spending {
     private final int amount;
     private final String name;
 
-    public Category(int amount, String name) {
+    public Spending(int amount, String name) {
         this.amount = amount;
         this.name = name;
     }
@@ -19,9 +19,9 @@ public class Category {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Category category = (Category) o;
-        return amount == category.amount &&
-                Objects.equals(name, category.name);
+        Spending spending = (Spending) o;
+        return amount == spending.amount &&
+                Objects.equals(name, spending.name);
     }
 
     @Override
