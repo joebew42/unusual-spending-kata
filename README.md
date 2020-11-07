@@ -30,6 +30,10 @@ The Credit Card Company
 # TODO
 
 - [F] Essence: Send a notification with the category that has the current amount at least the 50% more of the previous one.
+    - [F] Add the category name
     - [R] Find better names for `current` and `previous` variables in `UnusualSpending#evaluate`
     - [R] Maybe rename `UnusualSpending#evaluate` to `UnsusualSpending#evaluateExpenses`
-- [F] Essence: Send a notification with the list of categories that have the current amount at least the 50% more of the previous one.
+- [F] Essence: Send a notification with a Message that contains the category that have the current amount at least the 50% more of the previous one.
+- [F] Essence: Send a notification with a Message that contains all the categories that have the current amount at least the 50% more of the previous one.
+- [F] Essence: Introduce the concept of the User
+
