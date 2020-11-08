@@ -1,7 +1,6 @@
 package org.unusualspending;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -22,7 +21,7 @@ public class UnusualSpendingTest {
     }
 
     @Test
-    public void do_not_send_any_notification_when_payments_by_spending_are_not_the_50_percent_more_of_the_last_ones() {
+    public void do_not_send_any_notification_when_payments_by_spending_are_not_the_50_percent_more_of_the_past_ones() {
         List<Payment> payments = asList(
                 new Payment(2, "golf", "Playing Golf with friends"),
                 new Payment(1, "golf", "Drink at Golf court"),
@@ -41,6 +40,32 @@ public class UnusualSpendingTest {
         unusualSpending.evaluateByPayments(payments, paymentsOfTheLastMonth);
 
         assertTrue(probe.hasNotBeenCalled());
+    }
+
+    @Test
+    public void send_notification_when_payments_by_spending_are_the_50_percent_more_of_the_past_ones() {
+        List<Payment> payments = asList(
+                new Payment(2, "golf", "Playing Golf with friends"),
+                new Payment(1, "golf", "Drink at Golf court"),
+                new Payment(3, "entertainment", "Movie Theater"),
+                new Payment(3, "entertainment", "Movie Theater"),
+                new Payment(5, "gardening", "Flowers")
+        );
+
+        List<Payment> paymentsOfTheLastMonth = asList(
+                new Payment(1, "golf", "Drink at Golf court"),
+                new Payment(1, "golf", "Drink at Golf court"),
+                new Payment(1, "entertainment", "Popcorn"),
+                new Payment(3, "entertainment", "Movie Theater"),
+                new Payment(5, "gardening", "Flowers")
+        );
+
+        unusualSpending.evaluateByPayments(payments, paymentsOfTheLastMonth);
+
+        assertTrue(probe.hasBeenCalledWith(asList(
+                new Spending(3, "golf"),
+                new Spending(6, "entertainment")
+        )));
     }
 
     @Test
