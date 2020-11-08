@@ -68,45 +68,6 @@ public class UnusualSpendingTest {
         )));
     }
 
-    @Test
-    public void do_not_send_any_notification_when_spendings_are_not_the_50_percent_more_of_the_past_ones() {
-        List<Spending> spendings = asList(
-                new Spending(3, "golf"),
-                new Spending(7, "entertainment")
-        );
-
-        List<Spending> pastSpendings = asList(
-                new Spending(3, "golf"),
-                new Spending(6, "entertainment")
-        );
-
-        unusualSpending.evaluateBySpendings(spendings, pastSpendings);
-
-        assertTrue(probe.hasNotBeenCalled());
-    }
-
-    @Test
-    public void send_notification_for_the_spendings_that_are_the_50_percent_more_of_the_past_ones() {
-        List<Spending> spendings = asList(
-                new Spending(3, "golf"),
-                new Spending(6, "entertainment"),
-                new Spending(5, "gardening")
-        );
-
-        List<Spending> pastSpendings = asList(
-                new Spending(2, "golf"),
-                new Spending(4, "entertainment"),
-                new Spending(5, "gardening")
-        );
-
-        unusualSpending.evaluateBySpendings(spendings, pastSpendings);
-
-        assertTrue(probe.hasBeenCalledWith(asList(
-                new Spending(3, "golf"),
-                new Spending(6, "entertainment")
-        )));
-    }
-
     private static class SpyNotifier implements Notifier {
         private final Probe<List<Spending>> probe;
 
