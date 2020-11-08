@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.stream.Collectors.*;
+import static org.unusualspending.Payments.groupedBySpending;
 
 public class UnusualSpending {
     private final Notifier notifier;
@@ -33,14 +33,6 @@ public class UnusualSpending {
             }
         }
         return unusualSpendings;
-    }
-
-    private List<Spending> groupedBySpending(List<Payment> payments) {
-        return payments.stream()
-                .collect(groupingBy(Payment::spending, summingInt(Payment::price)))
-                .entrySet().stream()
-                .map(entry -> new Spending(entry.getValue(), entry.getKey()))
-                .collect(toList());
     }
 
     private Optional<Spending> findSpending(String name, List<Spending> spendings) {
