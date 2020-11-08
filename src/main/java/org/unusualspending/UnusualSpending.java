@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.stream.Collectors.*;
+
 public class UnusualSpending {
     private final Notifier notifier;
 
@@ -12,7 +14,7 @@ public class UnusualSpending {
     }
 
     public void evaluateByPayments(List<Payment> payments, List<Payment> paymentsOfTheLastMonth) {
-        throw new RuntimeException("Not yet implemented");
+        evaluateBySpendings(groupedBySpending(payments), groupedBySpending(paymentsOfTheLastMonth));
     }
 
     public void evaluateBySpendings(List<Spending> spendings, List<Spending> pastSpendings) {
@@ -31,6 +33,14 @@ public class UnusualSpending {
             }
         }
         return unusualSpendings;
+    }
+
+    private List<Spending> groupedBySpending(List<Payment> payments) {
+        return payments.stream()
+                .collect(groupingBy(Payment::spending, summingInt(Payment::price)))
+                .entrySet().stream()
+                .map(entry -> new Spending(entry.getValue(), entry.getKey()))
+                .collect(toList());
     }
 
     private Optional<Spending> findSpending(String name, List<Spending> spendings) {

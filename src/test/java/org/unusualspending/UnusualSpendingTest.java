@@ -21,7 +21,7 @@ public class UnusualSpendingTest {
         unusualSpending = new UnusualSpending(new SpyNotifier(probe));
     }
 
-    @Test @Ignore("WIP: Introducing the concept of Payments ...")
+    @Test
     public void do_not_send_any_notification_when_payments_by_spending_are_not_the_50_percent_more_of_the_last_ones() {
         List<Payment> payments = asList(
                 new Payment(2, "golf", "Playing Golf with friends"),

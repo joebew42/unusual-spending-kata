@@ -30,6 +30,7 @@ The Credit Card Company
 # TODO
 
 - [F] Essence: Introduce the concept of Payments
+    - Group Payments by Spendings
     - Do we need `Payments` class to have a method like `groupBySpending`?
 - [R] Should we have to introduce the class `Spendings` to describe Payments grouped by spending?
     - Then the private method `UnsualSpending#findSpending` should be moved to that class
