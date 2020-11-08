@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.unusualspending.Payments.groupedBySpending;
+import static org.unusualspending.Spendings.findSpending;
 
 public class UnusualSpending {
     private final Notifier notifier;
@@ -33,11 +34,5 @@ public class UnusualSpending {
             }
         }
         return unusualSpendings;
-    }
-
-    private Optional<Spending> findSpending(String name, List<Spending> spendings) {
-        return spendings.stream()
-                .filter(spending -> spending.name().equals(name))
-                .findFirst();
     }
 }
