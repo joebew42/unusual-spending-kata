@@ -29,5 +29,7 @@ The Credit Card Company
 
 # TODO
 
-- [F] Essence: Introduce the concept of the User
+- [F] Send a message by specifying the User
+- [R] How do I get all the payments for a given User? PaymentsRepository?
+- [F] Compose and e-mail message
 
