@@ -14,7 +14,7 @@ public class UnusualSpending {
         this.notifier = notifier;
     }
 
-    public void evaluateByPayments(List<Payment> payments, List<Payment> paymentsOfTheLastMonth) {
+    public void evaluateByPayments(String user, List<Payment> payments, List<Payment> paymentsOfTheLastMonth) {
         evaluateBySpendings(groupedBySpending(payments), groupedBySpending(paymentsOfTheLastMonth));
     }
 
