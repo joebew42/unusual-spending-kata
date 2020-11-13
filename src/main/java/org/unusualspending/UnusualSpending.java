@@ -8,10 +8,10 @@ import static org.unusualspending.Payments.groupBySpendings;
 import static org.unusualspending.Spendings.findSpending;
 
 public class UnusualSpending {
-    private final Notifier notifier;
+    private final AlertSystem alertSystem;
 
-    public UnusualSpending(Notifier notifier) {
-        this.notifier = notifier;
+    public UnusualSpending(AlertSystem alertSystem) {
+        this.alertSystem = alertSystem;
     }
 
     public void evaluate(String user, List<Payment> payments, List<Payment> paymentsOfTheLastMonth) {
@@ -21,7 +21,7 @@ public class UnusualSpending {
             return;
         }
 
-        notifier.send(new Notification(user, unusualSpendings));
+        alertSystem.send(new Notification(user, unusualSpendings));
     }
 
     private List<Spending> spendingsThatAreAtLeastThe50PercentMoreThan(List<Spending> pastSpendings, List<Spending> spendings) {

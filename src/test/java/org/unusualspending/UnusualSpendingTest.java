@@ -17,7 +17,7 @@ public class UnusualSpendingTest {
     @Before
     public void setUp() {
         probe = new Probe<>();
-        unusualSpending = new UnusualSpending(new SpyNotifier(probe));
+        unusualSpending = new UnusualSpending(new SpyAlertSystem(probe));
     }
 
     @Test
@@ -70,10 +70,10 @@ public class UnusualSpendingTest {
         assertTrue(probe.hasBeenCalledWith(notification));
     }
 
-    private static class SpyNotifier implements Notifier {
+    private static class SpyAlertSystem implements AlertSystem {
         private final Probe<Notification> probe;
 
-        public SpyNotifier(Probe<Notification> probe) {
+        public SpyAlertSystem(Probe<Notification> probe) {
             this.probe = probe;
         }
 

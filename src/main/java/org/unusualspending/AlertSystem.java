@@ -1,5 +1,5 @@
 package org.unusualspending;
 
-public interface Notifier {
+public interface AlertSystem {
     void send(Notification notification);
 }
