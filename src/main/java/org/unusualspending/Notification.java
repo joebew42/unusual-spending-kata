@@ -3,11 +3,11 @@ package org.unusualspending;
 import java.util.List;
 import java.util.Objects;
 
-public class Message {
+public class Notification {
     private String user;
     private List<Spending> spendings;
 
-    public Message(String user, List<Spending> spendings) {
+    public Notification(String user, List<Spending> spendings) {
         this.user = user;
         this.spendings = spendings;
     }
@@ -16,9 +16,9 @@ public class Message {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Message message = (Message) o;
-        return Objects.equals(user, message.user) &&
-                Objects.equals(spendings, message.spendings);
+        Notification notification = (Notification) o;
+        return Objects.equals(user, notification.user) &&
+                Objects.equals(spendings, notification.spendings);
     }
 
     @Override

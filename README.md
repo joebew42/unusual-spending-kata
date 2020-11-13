@@ -12,7 +12,7 @@ You work at a credit card company and as a value-add they want to start providin
 
 - Compare the total amount paid for the month, grouped by spending; filter down to the categories for which the user spent at least 50% more this month than last month.
 
-- Compose an e-mail message to the user that lists the categories for which spending was unusually high, with a subject like “Unusual spending of $1076 detected!” and this body:
+- Compose an e-mail notification to the user that lists the categories for which spending was unusually high, with a subject like “Unusual spending of $1076 detected!” and this body:
 
 ```
 Hello card user!
@@ -29,11 +29,10 @@ The Credit Card Company
 
 # TODO
 
-* [F] Send a message by specifying the User
-    * [R] Maybe `Notification` should be a better name instead of `Message`
+* [F] Send a notification by specifying the User
     * [R] Maybe `Notifier#notifyFor(Message ...)` is not descriptive. Should we change with `Notifier#send(Notification ...)
     * [R] Rename `evaluateByPayments` with `evaluate`
     * [R] Try to inline the `evaluateBySpendings`
 * [R] How do I get all the payments for a given User? PaymentsRepository?
-* [F] Compose and e-mail message
+* [F] Compose and e-mail notification
 
