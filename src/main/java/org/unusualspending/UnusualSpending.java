@@ -16,9 +16,12 @@ public class UnusualSpending {
 
     public void evaluate(String user, List<Payment> payments, List<Payment> paymentsOfTheLastMonth) {
         List<Spending> unusualSpendings = spendingsThatAreAtLeastThe50PercentMoreThan(groupBySpendings(paymentsOfTheLastMonth), groupBySpendings(payments));
-        if (!unusualSpendings.isEmpty()) {
-            notifier.send(new Notification(user, unusualSpendings));
+
+        if (unusualSpendings.isEmpty()) {
+            return;
         }
+
+        notifier.send(new Notification(user, unusualSpendings));
     }
 
     private List<Spending> spendingsThatAreAtLeastThe50PercentMoreThan(List<Spending> pastSpendings, List<Spending> spendings) {
