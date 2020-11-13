@@ -37,7 +37,7 @@ public class UnusualSpendingTest {
                 new Payment(3, "entertainment", "Movie Theater")
         );
 
-        unusualSpending.evaluateByPayments("AnyUser", payments, paymentsOfTheLastMonth);
+        unusualSpending.evaluate("AnyUser", payments, paymentsOfTheLastMonth);
 
         assertTrue(probe.hasNotBeenCalled());
     }
@@ -60,7 +60,7 @@ public class UnusualSpendingTest {
                 new Payment(5, "gardening", "Flowers")
         );
 
-        unusualSpending.evaluateByPayments("AnyUser", payments, paymentsOfTheLastMonth);
+        unusualSpending.evaluate("AnyUser", payments, paymentsOfTheLastMonth);
 
         Notification notification = new Notification("AnyUser", asList(
                 new Spending(3, "golf"),
