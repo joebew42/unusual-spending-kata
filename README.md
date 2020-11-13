@@ -29,7 +29,11 @@ The Credit Card Company
 
 # TODO
 
-- [F] Send a message by specifying the User
-- [R] How do I get all the payments for a given User? PaymentsRepository?
-- [F] Compose and e-mail message
+* [F] Send a message by specifying the User
+    * [R] Maybe `Notification` should be a better name instead of `Message`
+    * [R] Maybe `Notifier#notifyFor(Message ...)` is not descriptive. Should we change with `Notifier#send(Notification ...)
+    * [R] Rename `evaluateByPayments` with `evaluate`
+    * [R] Try to inline the `evaluateBySpendings`
+* [R] How do I get all the payments for a given User? PaymentsRepository?
+* [F] Compose and e-mail message
 

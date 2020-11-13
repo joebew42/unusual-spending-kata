@@ -11,7 +11,7 @@ import static org.junit.Assert.assertTrue;
 
 public class UnusualSpendingTest {
 
-    private Probe<List<Spending>> probe;
+    private Probe<Message> probe;
     private UnusualSpending unusualSpending;
 
     @Before
@@ -62,22 +62,26 @@ public class UnusualSpendingTest {
 
         unusualSpending.evaluateByPayments("AnyUser", payments, paymentsOfTheLastMonth);
 
-        assertTrue(probe.hasBeenCalledWith(asList(
+        List<Spending> spendings = asList(
                 new Spending(3, "golf"),
                 new Spending(6, "entertainment")
-        )));
+        );
+
+        Message message = new Message("AnyUser", spendings);
+
+        assertTrue(probe.hasBeenCalledWith(message));
     }
 
     private static class SpyNotifier implements Notifier {
-        private final Probe<List<Spending>> probe;
+        private final Probe<Message> probe;
 
-        public SpyNotifier(Probe<List<Spending>> probe) {
+        public SpyNotifier(Probe<Message> probe) {
             this.probe = probe;
         }
 
         @Override
-        public void notifyFor(List<Spending> spendings) {
-            probe.callWith(spendings);
+        public void notifyFor(Message message) {
+            probe.callWith(message);
         }
     }
 
