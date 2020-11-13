@@ -30,5 +30,6 @@ The Credit Card Company
 # TODO
 
 * [R] How do I get all the payments for a given User? PaymentsRepository?
+    * Run few exploratory sessions here. Should we have someone that uses `UnusualSpendings`? (e.g. a Service?)
 * [F] Compose and e-mail notification
 
