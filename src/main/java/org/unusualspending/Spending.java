@@ -19,7 +19,7 @@ public class Spending {
         return amount;
     }
 
-    boolean isAtLeast50percentMoreThan(Spending past) {
+    boolean isAtLeast50PercentMoreThan(Spending past) {
         return amount() >= past.amount() + past.amount() / 2;
     }
 

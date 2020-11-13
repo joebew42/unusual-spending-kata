@@ -30,7 +30,6 @@ The Credit Card Company
 # TODO
 
 * [F] Send a notification by specifying the User
-    * [R] Rename `evaluateByPayments` with `evaluate`
     * [R] Try to inline the `evaluateBySpendings`
     * [R] Consider to rename `Notifier` that is too generic, with a `AlertSystem` that seems to be closer to the domain
 * [R] How do I get all the payments for a given User? PaymentsRepository?
