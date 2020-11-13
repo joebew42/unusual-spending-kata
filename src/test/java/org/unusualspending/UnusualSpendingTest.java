@@ -78,7 +78,7 @@ public class UnusualSpendingTest {
         }
 
         @Override
-        public void notifyFor(Notification notification) {
+        public void send(Notification notification) {
             probe.callWith(notification);
         }
     }

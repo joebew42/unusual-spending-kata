@@ -30,7 +30,6 @@ The Credit Card Company
 # TODO
 
 * [F] Send a notification by specifying the User
-    * [R] Maybe `Notifier#notifyFor(Message ...)` is not descriptive. Should we change with `Notifier#send(Notification ...)
     * [R] Rename `evaluateByPayments` with `evaluate`
     * [R] Try to inline the `evaluateBySpendings`
 * [R] How do I get all the payments for a given User? PaymentsRepository?

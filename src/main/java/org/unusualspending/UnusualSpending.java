@@ -21,7 +21,7 @@ public class UnusualSpending {
     private void evaluateBySpendings(String user, List<Spending> spendings, List<Spending> pastSpendings) {
         List<Spending> unusualSpendings = allSpendingsThatAreAtLeastThe50percentMoreThan(pastSpendings, spendings);
         if (!unusualSpendings.isEmpty()) {
-            notifier.notifyFor(new Notification(user, unusualSpendings));
+            notifier.send(new Notification(user, unusualSpendings));
         }
     }
 
