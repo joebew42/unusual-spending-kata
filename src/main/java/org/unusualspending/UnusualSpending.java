@@ -17,13 +17,13 @@ public class UnusualSpending {
         List<Payment> currentMonthPayments = paymentsRepository.currentMonth(user);
         List<Payment> lastMonthPayments = paymentsRepository.lastMonth(user);
 
-        Spendings unusualSpendings = spendingsFrom(currentMonthPayments).atLeast50PercentMoreThan(spendingsFrom(lastMonthPayments));
+        Spendings unusual = spendingsFrom(currentMonthPayments).atLeast50PercentMoreThan(spendingsFrom(lastMonthPayments));
 
-        if (unusualSpendings.all().isEmpty()) {
+        if (unusual.hasNoSpendings()) {
             return;
         }
 
-        alertSystem.send(new Notification(user, unusualSpendings.all()));
+        alertSystem.send(new Notification(user, unusual.all()));
     }
 
 }

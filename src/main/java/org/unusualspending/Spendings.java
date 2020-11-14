@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.emptyList;
+import static java.util.List.copyOf;
 
 public class Spendings {
     private List<Spending> spendings;
@@ -40,7 +41,11 @@ public class Spendings {
     }
 
     public List<Spending> all() {
-        return List.copyOf(spendings);
+        return copyOf(spendings);
+    }
+
+    boolean hasNoSpendings() {
+        return all().isEmpty();
     }
 
     private Optional<Spending> findSpending(String name) {
