@@ -4,7 +4,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
-import static java.util.List.copyOf;
 
 public class Spendings {
     static Spendings spendingsFrom(List<Payment> currentMonthPayments) {
@@ -29,7 +28,7 @@ public class Spendings {
 
     public Spendings atLeast50PercentMoreThan(Spendings otherSpendings) {
         List<Spending> unusualSpendings = new ArrayList<>();
-        for (Spending spending : all()) {
+        for (Spending spending : spendings) {
             Optional<Spending> pastSpending = otherSpendings.findSpending(spending.name());
             if (pastSpending.isPresent() && spending.isAtLeast50PercentMoreThan(pastSpending.get())) {
                 unusualSpendings.add(spending);
@@ -39,11 +38,7 @@ public class Spendings {
     }
 
     boolean hasNoSpendings() {
-        return all().isEmpty();
-    }
-
-    private List<Spending> all() {
-        return copyOf(spendings);
+        return spendings.isEmpty();
     }
 
     private Optional<Spending> findSpending(String name) {
