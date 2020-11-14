@@ -36,10 +36,10 @@ public class UnusualSpendingTest {
                 new Payment(3, "entertainment", "Movie Theater")
         );
 
-        InMemoryPaymentsRepository paymentsRepository = new InMemoryPaymentsRepository("AnyUser", currentMonthPayments, lastMonthPayments);
-        UnusualSpending unusualSpending = new UnusualSpending(new SpyAlertSystem(probe), new Spendings());
+        PaymentsRepository paymentsRepository = new InMemoryPaymentsRepository("AnyUser", currentMonthPayments, lastMonthPayments);
+        UnusualSpending unusualSpending = new UnusualSpending(new SpyAlertSystem(probe), new Spendings(), paymentsRepository);
 
-        unusualSpending.evaluate("AnyUser", paymentsRepository.currentMonth("AnyUser"), paymentsRepository.lastMonth("AnyUser"));
+        unusualSpending.evaluate("AnyUser");
 
         assertTrue(probe.hasNotBeenCalled());
     }
@@ -62,10 +62,10 @@ public class UnusualSpendingTest {
                 new Payment(5, "gardening", "Flowers")
         );
 
-        InMemoryPaymentsRepository paymentsRepository = new InMemoryPaymentsRepository("AnyUser", currentMonthPayments, lastMonthPayments);
-        UnusualSpending unusualSpending = new UnusualSpending(new SpyAlertSystem(probe), new Spendings());
+        PaymentsRepository paymentsRepository = new InMemoryPaymentsRepository("AnyUser", currentMonthPayments, lastMonthPayments);
+        UnusualSpending unusualSpending = new UnusualSpending(new SpyAlertSystem(probe), new Spendings(), paymentsRepository);
 
-        unusualSpending.evaluate("AnyUser", paymentsRepository.currentMonth("AnyUser"), paymentsRepository.lastMonth("AnyUser"));
+        unusualSpending.evaluate("AnyUser");
 
         Notification notification = new Notification("AnyUser", asList(
                 new Spending(3, "golf"),
