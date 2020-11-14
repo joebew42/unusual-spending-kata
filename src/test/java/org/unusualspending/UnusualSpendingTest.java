@@ -35,7 +35,7 @@ public class UnusualSpendingTest {
                 new Payment(3, "entertainment", "Movie Theater")
         );
 
-        UnusualSpending unusualSpending = new UnusualSpending(new SpyAlertSystem(probe));
+        UnusualSpending unusualSpending = new UnusualSpending(new SpyAlertSystem(probe), new Spendings());
 
         unusualSpending.evaluate("AnyUser", currentMonthPayments, lastMonthPayments);
 
@@ -60,7 +60,7 @@ public class UnusualSpendingTest {
                 new Payment(5, "gardening", "Flowers")
         );
 
-        UnusualSpending unusualSpending = new UnusualSpending(new SpyAlertSystem(probe));
+        UnusualSpending unusualSpending = new UnusualSpending(new SpyAlertSystem(probe), new Spendings());
 
         unusualSpending.evaluate("AnyUser", currentMonthPayments, lastMonthPayments);
 
