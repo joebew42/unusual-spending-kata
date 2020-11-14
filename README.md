@@ -29,5 +29,5 @@ The Credit Card Company
 
 # TODO
 
-* [F] Compose and e-mail notification
+* [F] Compose an e-mail notification
 
