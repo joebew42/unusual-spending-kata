@@ -35,10 +35,10 @@ public class UnusualSpendingTest {
                 new Payment(3, "entertainment", "Movie Theater")
         );
 
-        InMemoryPaymentsRepository paymentsRepository = new InMemoryPaymentsRepository();
+        InMemoryPaymentsRepository paymentsRepository = new InMemoryPaymentsRepository(currentMonthPayments, lastMonthPayments);
         UnusualSpending unusualSpending = new UnusualSpending(new SpyAlertSystem(probe), new Spendings());
 
-        unusualSpending.evaluate("AnyUser", paymentsRepository.currentMonth(currentMonthPayments), paymentsRepository.lastMonth(lastMonthPayments));
+        unusualSpending.evaluate("AnyUser", paymentsRepository.currentMonth(), paymentsRepository.lastMonth());
 
         assertTrue(probe.hasNotBeenCalled());
     }
@@ -61,10 +61,10 @@ public class UnusualSpendingTest {
                 new Payment(5, "gardening", "Flowers")
         );
 
-        InMemoryPaymentsRepository paymentsRepository = new InMemoryPaymentsRepository();
+        InMemoryPaymentsRepository paymentsRepository = new InMemoryPaymentsRepository(currentMonthPayments, lastMonthPayments);
         UnusualSpending unusualSpending = new UnusualSpending(new SpyAlertSystem(probe), new Spendings());
 
-        unusualSpending.evaluate("AnyUser", paymentsRepository.currentMonth(currentMonthPayments), paymentsRepository.lastMonth(lastMonthPayments));
+        unusualSpending.evaluate("AnyUser", paymentsRepository.currentMonth(), paymentsRepository.lastMonth());
 
         Notification notification = new Notification("AnyUser", asList(
                 new Spending(3, "golf"),
@@ -109,15 +109,20 @@ public class UnusualSpendingTest {
     }
 
     public static class InMemoryPaymentsRepository {
-        public InMemoryPaymentsRepository() {
+        private final List<Payment> currentMonth;
+        private final List<Payment> lastMonth;
+
+        public InMemoryPaymentsRepository(List<Payment> currentMonth, List<Payment> lastMonth) {
+            this.currentMonth = currentMonth;
+            this.lastMonth = lastMonth;
         }
 
-        public List<Payment> lastMonth(List<Payment> lastMonthPayments) {
-            return lastMonthPayments;
+        public List<Payment> lastMonth() {
+            return this.lastMonth;
         }
 
-        public List<Payment> currentMonth(List<Payment> currentMonthPayments) {
-            return currentMonthPayments;
+        public List<Payment> currentMonth() {
+            return this.currentMonth;
         }
     }
 }
