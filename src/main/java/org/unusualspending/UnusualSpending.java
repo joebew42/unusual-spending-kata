@@ -9,10 +9,10 @@ public class UnusualSpending {
     private final Spendings spendings;
     private final PaymentsRepository paymentsRepository;
 
-    public UnusualSpending(AlertSystem alertSystem, Spendings spendings, PaymentsRepository paymentsRepository) {
+    public UnusualSpending(PaymentsRepository paymentsRepository, AlertSystem alertSystem, Spendings spendings) {
+        this.paymentsRepository = paymentsRepository;
         this.alertSystem = alertSystem;
         this.spendings = spendings;
-        this.paymentsRepository = paymentsRepository;
     }
 
     public void evaluate(String user) {
