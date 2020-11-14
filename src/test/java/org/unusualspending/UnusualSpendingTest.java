@@ -109,7 +109,7 @@ public class UnusualSpendingTest {
         }
     }
 
-    public static class InMemoryPaymentsRepository {
+    public static class InMemoryPaymentsRepository implements PaymentsRepository {
         private final HashMap<String, List<Payment>> currentMonthPayments = new HashMap<>();
         private final HashMap<String, List<Payment>> lastMonthPayments = new HashMap<>();
 
@@ -118,10 +118,12 @@ public class UnusualSpendingTest {
             lastMonthPayments.put(user, lastMonth);
         }
 
+        @Override
         public List<Payment> currentMonth(String user) {
             return currentMonthPayments.get(user);
         }
 
+        @Override
         public List<Payment> lastMonth(String user) {
             return lastMonthPayments.get(user);
         }
