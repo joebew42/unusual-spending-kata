@@ -28,7 +28,7 @@ public class Spendings {
         return new Spendings(spendings);
     }
 
-    public List<Spending> atLeast50PercentMoreThan(Spendings otherSpendings) {
+    public Spendings atLeast50PercentMoreThan(Spendings otherSpendings) {
         List<Spending> unusualSpendings = new ArrayList<>();
         for (Spending spending : all()) {
             Optional<Spending> pastSpending = otherSpendings.findSpending(spending.name());
@@ -36,10 +36,10 @@ public class Spendings {
                 unusualSpendings.add(spending);
             }
         }
-        return unusualSpendings;
+        return new Spendings(unusualSpendings);
     }
 
-    private List<Spending> all() {
+    public List<Spending> all() {
         return List.copyOf(spendings);
     }
 
