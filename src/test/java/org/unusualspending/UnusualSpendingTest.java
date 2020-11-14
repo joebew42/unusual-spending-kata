@@ -35,9 +35,10 @@ public class UnusualSpendingTest {
                 new Payment(3, "entertainment", "Movie Theater")
         );
 
+        InMemoryPaymentsRepository paymentsRepository = new InMemoryPaymentsRepository();
         UnusualSpending unusualSpending = new UnusualSpending(new SpyAlertSystem(probe), new Spendings());
 
-        unusualSpending.evaluate("AnyUser", currentMonthPayments, lastMonthPayments);
+        unusualSpending.evaluate("AnyUser", paymentsRepository.currentMonth(currentMonthPayments), paymentsRepository.lastMonth(lastMonthPayments));
 
         assertTrue(probe.hasNotBeenCalled());
     }
@@ -60,9 +61,10 @@ public class UnusualSpendingTest {
                 new Payment(5, "gardening", "Flowers")
         );
 
+        InMemoryPaymentsRepository paymentsRepository = new InMemoryPaymentsRepository();
         UnusualSpending unusualSpending = new UnusualSpending(new SpyAlertSystem(probe), new Spendings());
 
-        unusualSpending.evaluate("AnyUser", currentMonthPayments, lastMonthPayments);
+        unusualSpending.evaluate("AnyUser", paymentsRepository.currentMonth(currentMonthPayments), paymentsRepository.lastMonth(lastMonthPayments));
 
         Notification notification = new Notification("AnyUser", asList(
                 new Spending(3, "golf"),
@@ -103,6 +105,19 @@ public class UnusualSpendingTest {
 
         public boolean hasNotBeenCalled() {
             return calledWith == null;
+        }
+    }
+
+    public static class InMemoryPaymentsRepository {
+        public InMemoryPaymentsRepository() {
+        }
+
+        public List<Payment> lastMonth(List<Payment> lastMonthPayments) {
+            return lastMonthPayments;
+        }
+
+        public List<Payment> currentMonth(List<Payment> currentMonthPayments) {
+            return currentMonthPayments;
         }
     }
 }
