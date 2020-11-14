@@ -29,7 +29,5 @@ The Credit Card Company
 
 # TODO
 
-* [R] Think to introduce the `Spendings` object that keep a list of spendings, on which we can then call
-      `Spendings.atLeast50PercentMoreThan(pastSpendings)`
 * [F] Compose and e-mail notification
 

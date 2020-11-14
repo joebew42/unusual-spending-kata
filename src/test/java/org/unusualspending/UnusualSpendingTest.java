@@ -37,7 +37,7 @@ public class UnusualSpendingTest {
         );
 
         PaymentsRepository paymentsRepository = new InMemoryPaymentsRepository("AnyUser", currentMonthPayments, lastMonthPayments);
-        UnusualSpending unusualSpending = new UnusualSpending(paymentsRepository, new SpyAlertSystem(probe), new Spendings());
+        UnusualSpending unusualSpending = new UnusualSpending(paymentsRepository, new SpyAlertSystem(probe));
 
         unusualSpending.evaluate("AnyUser");
 
@@ -63,7 +63,7 @@ public class UnusualSpendingTest {
         );
 
         PaymentsRepository paymentsRepository = new InMemoryPaymentsRepository("AnyUser", currentMonthPayments, lastMonthPayments);
-        UnusualSpending unusualSpending = new UnusualSpending(paymentsRepository, new SpyAlertSystem(probe), new Spendings());
+        UnusualSpending unusualSpending = new UnusualSpending(paymentsRepository, new SpyAlertSystem(probe));
 
         unusualSpending.evaluate("AnyUser");
 
