@@ -2,7 +2,7 @@ package org.unusualspending;
 
 import java.util.List;
 
-import static org.unusualspending.Payments.groupBySpendings;
+import static org.unusualspending.Spendings.fromPayments;
 
 public class UnusualSpending {
     private final AlertSystem alertSystem;
@@ -19,7 +19,7 @@ public class UnusualSpending {
         List<Payment> currentMonthPayments = paymentsRepository.currentMonth(user);
         List<Payment> lastMonthPayments = paymentsRepository.lastMonth(user);
 
-        List<Spending> unusualSpendings = spendings.thatAreAtLeast50PercentMoreThan(groupBySpendings(lastMonthPayments), groupBySpendings(currentMonthPayments));
+        List<Spending> unusualSpendings = spendings.thatAreAtLeast50PercentMoreThan(fromPayments(lastMonthPayments), fromPayments(currentMonthPayments));
 
         if (unusualSpendings.isEmpty()) {
             return;
