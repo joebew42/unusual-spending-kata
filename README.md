@@ -29,6 +29,8 @@ The Credit Card Company
 
 # TODO
 
+* [R] Move `Payments#groupBySpendings()` to `Spendings#fromPayments`
+      It's `Spendings` that should know how to build itself from other objects, and not the opposite.
 * [R] Think to introduce the `Spendings` object that keep a list of spendings, on which we can then call
       `Spendings.atLeast50PercentMoreThan(pastSpendings)`
 * [F] Compose and e-mail notification
