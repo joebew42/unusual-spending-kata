@@ -3,6 +3,7 @@ package org.unusualspending;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -35,10 +36,10 @@ public class UnusualSpendingTest {
                 new Payment(3, "entertainment", "Movie Theater")
         );
 
-        InMemoryPaymentsRepository paymentsRepository = new InMemoryPaymentsRepository(currentMonthPayments, lastMonthPayments);
+        InMemoryPaymentsRepository paymentsRepository = new InMemoryPaymentsRepository("AnyUser", currentMonthPayments, lastMonthPayments);
         UnusualSpending unusualSpending = new UnusualSpending(new SpyAlertSystem(probe), new Spendings());
 
-        unusualSpending.evaluate("AnyUser", paymentsRepository.currentMonth(), paymentsRepository.lastMonth());
+        unusualSpending.evaluate("AnyUser", paymentsRepository.currentMonth("AnyUser"), paymentsRepository.lastMonth("AnyUser"));
 
         assertTrue(probe.hasNotBeenCalled());
     }
@@ -61,10 +62,10 @@ public class UnusualSpendingTest {
                 new Payment(5, "gardening", "Flowers")
         );
 
-        InMemoryPaymentsRepository paymentsRepository = new InMemoryPaymentsRepository(currentMonthPayments, lastMonthPayments);
+        InMemoryPaymentsRepository paymentsRepository = new InMemoryPaymentsRepository("AnyUser", currentMonthPayments, lastMonthPayments);
         UnusualSpending unusualSpending = new UnusualSpending(new SpyAlertSystem(probe), new Spendings());
 
-        unusualSpending.evaluate("AnyUser", paymentsRepository.currentMonth(), paymentsRepository.lastMonth());
+        unusualSpending.evaluate("AnyUser", paymentsRepository.currentMonth("AnyUser"), paymentsRepository.lastMonth("AnyUser"));
 
         Notification notification = new Notification("AnyUser", asList(
                 new Spending(3, "golf"),
@@ -109,20 +110,20 @@ public class UnusualSpendingTest {
     }
 
     public static class InMemoryPaymentsRepository {
-        private final List<Payment> currentMonth;
-        private final List<Payment> lastMonth;
+        private final HashMap<String, List<Payment>> currentMonthPayments = new HashMap<>();
+        private final HashMap<String, List<Payment>> lastMonthPayments = new HashMap<>();
 
-        public InMemoryPaymentsRepository(List<Payment> currentMonth, List<Payment> lastMonth) {
-            this.currentMonth = currentMonth;
-            this.lastMonth = lastMonth;
+        public InMemoryPaymentsRepository(String user, List<Payment> currentMonth, List<Payment> lastMonth) {
+            currentMonthPayments.put(user, currentMonth);
+            lastMonthPayments.put(user, lastMonth);
         }
 
-        public List<Payment> lastMonth() {
-            return this.lastMonth;
+        public List<Payment> currentMonth(String user) {
+            return currentMonthPayments.get(user);
         }
 
-        public List<Payment> currentMonth() {
-            return this.currentMonth;
+        public List<Payment> lastMonth(String user) {
+            return lastMonthPayments.get(user);
         }
     }
 }
