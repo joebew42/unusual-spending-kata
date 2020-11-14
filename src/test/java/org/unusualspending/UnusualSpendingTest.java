@@ -67,7 +67,7 @@ public class UnusualSpendingTest {
 
         unusualSpending.evaluate("AnyUser");
 
-        Notification notification = new Notification("AnyUser", asList(
+        Notification notification = new Notification("AnyUser", new Spendings(
                 new Spending(3, "golf"),
                 new Spending(6, "entertainment")
         ));

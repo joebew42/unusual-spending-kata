@@ -29,6 +29,5 @@ The Credit Card Company
 
 # TODO
 
-* [R] Make the `Notification` to work with `Spendings` and not a list of `Spending`
 * [F] Compose and e-mail notification
 

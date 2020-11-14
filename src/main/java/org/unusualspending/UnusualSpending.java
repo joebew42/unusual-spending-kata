@@ -23,7 +23,7 @@ public class UnusualSpending {
             return;
         }
 
-        alertSystem.send(new Notification(user, unusual.all()));
+        alertSystem.send(new Notification(user, unusual));
     }
 
 }

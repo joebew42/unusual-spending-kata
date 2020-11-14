@@ -1,13 +1,12 @@
 package org.unusualspending;
 
-import java.util.List;
 import java.util.Objects;
 
 public class Notification {
-    private String user;
-    private List<Spending> spendings;
+    private final String user;
+    private final Spendings spendings;
 
-    public Notification(String user, List<Spending> spendings) {
+    public Notification(String user, Spendings spendings) {
         this.user = user;
         this.spendings = spendings;
     }
