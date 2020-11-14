@@ -5,15 +5,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.emptyList;
 import static java.util.List.copyOf;
 
 public class Spendings {
-    private List<Spending> spendings;
-
-    public Spendings() {
-        this(emptyList());
-    }
+    private final List<Spending> spendings;
 
     public Spendings(List<Spending> spendings) {
         this.spendings = spendings;
