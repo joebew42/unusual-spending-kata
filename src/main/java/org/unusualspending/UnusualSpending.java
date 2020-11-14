@@ -14,8 +14,8 @@ public class UnusualSpending {
         this.alertSystem = alertSystem;
     }
 
-    public void evaluate(String user, List<Payment> payments, List<Payment> paymentsOfTheLastMonth) {
-        List<Spending> unusualSpendings = spendingsThatAreAtLeastThe50PercentMoreThan(groupBySpendings(paymentsOfTheLastMonth), groupBySpendings(payments));
+    public void evaluate(String user, List<Payment> currentMonthPayments, List<Payment> lastMonthPayments) {
+        List<Spending> unusualSpendings = spendingsThatAreAtLeastThe50PercentMoreThan(groupBySpendings(lastMonthPayments), groupBySpendings(currentMonthPayments));
 
         if (unusualSpendings.isEmpty()) {
             return;

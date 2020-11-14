@@ -12,17 +12,15 @@ import static org.junit.Assert.assertTrue;
 public class UnusualSpendingTest {
 
     private Probe<Notification> probe;
-    private UnusualSpending unusualSpending;
 
     @Before
     public void setUp() {
         probe = new Probe<>();
-        unusualSpending = new UnusualSpending(new SpyAlertSystem(probe));
     }
 
     @Test
     public void do_not_send_any_notification_when_payments_by_spending_are_not_the_50_percent_more_of_the_past_ones() {
-        List<Payment> payments = asList(
+        List<Payment> currentMonthPayments = asList(
                 new Payment(2, "golf", "Playing Golf with friends"),
                 new Payment(1, "golf", "Drink at Golf court"),
                 new Payment(1, "entertainment", "Popcorn"),
@@ -30,21 +28,23 @@ public class UnusualSpendingTest {
                 new Payment(3, "entertainment", "Movie Theater")
         );
 
-        List<Payment> paymentsOfTheLastMonth = asList(
+        List<Payment> lastMonthPayments = asList(
                 new Payment(2, "golf", "Playing Golf with friends"),
                 new Payment(1, "golf", "Drink at Golf court"),
                 new Payment(3, "entertainment", "Movie Theater"),
                 new Payment(3, "entertainment", "Movie Theater")
         );
 
-        unusualSpending.evaluate("AnyUser", payments, paymentsOfTheLastMonth);
+        UnusualSpending unusualSpending = new UnusualSpending(new SpyAlertSystem(probe));
+
+        unusualSpending.evaluate("AnyUser", currentMonthPayments, lastMonthPayments);
 
         assertTrue(probe.hasNotBeenCalled());
     }
 
     @Test
     public void send_notification_when_payments_by_spending_are_the_50_percent_more_of_the_past_ones() {
-        List<Payment> payments = asList(
+        List<Payment> currentMonthPayments = asList(
                 new Payment(2, "golf", "Playing Golf with friends"),
                 new Payment(1, "golf", "Drink at Golf court"),
                 new Payment(3, "entertainment", "Movie Theater"),
@@ -52,7 +52,7 @@ public class UnusualSpendingTest {
                 new Payment(5, "gardening", "Flowers")
         );
 
-        List<Payment> paymentsOfTheLastMonth = asList(
+        List<Payment> lastMonthPayments = asList(
                 new Payment(1, "golf", "Drink at Golf court"),
                 new Payment(1, "golf", "Drink at Golf court"),
                 new Payment(1, "entertainment", "Popcorn"),
@@ -60,7 +60,9 @@ public class UnusualSpendingTest {
                 new Payment(5, "gardening", "Flowers")
         );
 
-        unusualSpending.evaluate("AnyUser", payments, paymentsOfTheLastMonth);
+        UnusualSpending unusualSpending = new UnusualSpending(new SpyAlertSystem(probe));
+
+        unusualSpending.evaluate("AnyUser", currentMonthPayments, lastMonthPayments);
 
         Notification notification = new Notification("AnyUser", asList(
                 new Spending(3, "golf"),
