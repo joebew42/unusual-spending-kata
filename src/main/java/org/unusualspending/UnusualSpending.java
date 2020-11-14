@@ -16,10 +16,9 @@ public class UnusualSpending {
     }
 
     public void evaluate(String user) {
-        evaluate(user, paymentsRepository.currentMonth(user), paymentsRepository.lastMonth(user));
-    }
+        List<Payment> currentMonthPayments = paymentsRepository.currentMonth(user);
+        List<Payment> lastMonthPayments = paymentsRepository.lastMonth(user);
 
-    public void evaluate(String user, List<Payment> currentMonthPayments, List<Payment> lastMonthPayments) {
         List<Spending> unusualSpendings = spendings.thatAreAtLeast50PercentMoreThan(groupBySpendings(lastMonthPayments), groupBySpendings(currentMonthPayments));
 
         if (unusualSpendings.isEmpty()) {
@@ -28,4 +27,5 @@ public class UnusualSpending {
 
         alertSystem.send(new Notification(user, unusualSpendings));
     }
+
 }
