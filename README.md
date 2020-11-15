@@ -30,5 +30,6 @@ The Credit Card Company
 # TODO
 
 * [F] Compose an e-mail notification
+    * `bar@example.com` is still hard coded in `EmailAlertSystem#sendEmail`
     * Compose the text and subject of the email as it's described in the requirements
 
