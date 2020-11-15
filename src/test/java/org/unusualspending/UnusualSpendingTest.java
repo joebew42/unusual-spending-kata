@@ -85,7 +85,7 @@ public class UnusualSpendingTest {
 
         unusualSpending.evaluate(user);
 
-        Notification notification = new Notification(user.userName(), new Spendings(
+        Notification notification = new Notification(user, new Spendings(
                 new Spending(3, "golf"),
                 new Spending(6, "entertainment")
         ));
@@ -98,7 +98,7 @@ public class UnusualSpendingTest {
     }
 
     private void assertNotificationSent(Notification notification) {
-        MimeMessage message = mailServer.getReceivedMessagesForDomain("bar@example.com")[0];
+        MimeMessage message = mailServer.getReceivedMessagesForDomain(notification.userEmail())[0];
         List<Spending> spendings = notification.allSpendings();
 
         assertThat(subject(message), is(format("Unusual spending of $%d detected!", total(spendings))));
