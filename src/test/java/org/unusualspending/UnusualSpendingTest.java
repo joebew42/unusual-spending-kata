@@ -1,8 +1,17 @@
 package org.unusualspending;
 
+import com.icegreen.greenmail.util.GreenMail;
+import com.icegreen.greenmail.util.ServerSetupTest;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.util.HashMap;
 import java.util.List;
 
@@ -13,10 +22,18 @@ import static org.junit.Assert.assertTrue;
 public class UnusualSpendingTest {
 
     private Probe<Notification> probe;
+    private GreenMail mailServer;
 
     @Before
     public void setUp() {
         probe = new Probe<>();
+        mailServer = new GreenMail(ServerSetupTest.ALL);
+        mailServer.start();
+    }
+
+    @After
+    public void tearDown() {
+        mailServer.stop();
     }
 
     @Test
@@ -37,7 +54,7 @@ public class UnusualSpendingTest {
         );
 
         PaymentsRepository paymentsRepository = new InMemoryPaymentsRepository("AnyUser", currentMonthPayments, lastMonthPayments);
-        UnusualSpending unusualSpending = new UnusualSpending(paymentsRepository, new SpyAlertSystem(probe));
+        UnusualSpending unusualSpending = new UnusualSpending(paymentsRepository, new SpyAlertSystem(probe, mailServer.getSmtp().createSession()));
 
         unusualSpending.evaluate("AnyUser");
 
@@ -63,7 +80,7 @@ public class UnusualSpendingTest {
         );
 
         PaymentsRepository paymentsRepository = new InMemoryPaymentsRepository("AnyUser", currentMonthPayments, lastMonthPayments);
-        UnusualSpending unusualSpending = new UnusualSpending(paymentsRepository, new SpyAlertSystem(probe));
+        UnusualSpending unusualSpending = new UnusualSpending(paymentsRepository, new SpyAlertSystem(probe, mailServer.getSmtp().createSession()));
 
         unusualSpending.evaluate("AnyUser");
 
@@ -76,23 +93,42 @@ public class UnusualSpendingTest {
     }
 
     private void assertNoNotificationSent() {
+        assertEquals(0, mailServer.getReceivedMessagesForDomain("bar@example.com").length);
         assertTrue(probe.hasNotBeenCalled());
     }
 
     private void assertNotificationSent(Notification notification) {
+        assertEquals(1, mailServer.getReceivedMessagesForDomain("bar@example.com").length);
         assertTrue(probe.hasBeenCalledWith(notification));
     }
 
     private static class SpyAlertSystem implements AlertSystem {
         private final Probe<Notification> probe;
+        private final Session smtpSession;
 
-        public SpyAlertSystem(Probe<Notification> probe) {
+        public SpyAlertSystem(Probe<Notification> probe, Session smtpSession) {
             this.probe = probe;
+            this.smtpSession = smtpSession;
         }
 
         @Override
         public void send(Notification notification) {
+            try {
+                sendEMail();
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
             probe.callWith(notification);
+        }
+
+        private void sendEMail() throws MessagingException {
+            Message msg = new MimeMessage(smtpSession);
+            msg.setFrom(new InternetAddress("foo@example.com"));
+            msg.addRecipient(Message.RecipientType.TO,
+                    new InternetAddress("bar@example.com"));
+            msg.setSubject("Email sent to GreenMail via plain JavaMail");
+            msg.setText("Fetch me via IMAP");
+            Transport.send(msg);
         }
     }
 
