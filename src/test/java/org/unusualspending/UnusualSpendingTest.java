@@ -6,11 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.util.HashMap;
@@ -129,52 +125,6 @@ public class UnusualSpendingTest {
             return (String) message.getContent();
         } catch (IOException | MessagingException e) {
             return "";
-        }
-    }
-
-    private static class EmailAlertSystem implements AlertSystem {
-        private final Session smtpSession;
-
-        public EmailAlertSystem(Session smtpSession) {
-            this.smtpSession = smtpSession;
-        }
-
-        @Override
-        public void send(Notification notification) {
-            try {
-                String subject = composeSubjectFrom(notification);
-                sendEMail(subject, composeMessageFrom(notification));
-            } catch (MessagingException e) {
-                e.printStackTrace();
-            }
-        }
-
-        private String composeSubjectFrom(Notification notification) {
-            return format("Unusual spending of $%d detected!", total(notification.allSpendings()));
-        }
-
-        private String composeMessageFrom(Notification notification) {
-            String body = "";
-            for (Spending spending : notification.allSpendings()) {
-                body = format("You spent $%d on %s", spending.amount(), spending.name()).concat(body);
-            }
-            return body;
-        }
-
-        private void sendEMail(String subject, String emailMessage) throws MessagingException {
-            Message msg = new MimeMessage(smtpSession);
-            msg.setFrom(new InternetAddress("foo@example.com"));
-            msg.addRecipient(Message.RecipientType.TO,
-                    new InternetAddress("bar@example.com"));
-            msg.setSubject(subject);
-            msg.setText(emailMessage);
-            Transport.send(msg);
-        }
-
-        private long total(List<Spending> spendings) {
-            return spendings.stream()
-                    .collect(summarizingInt(Spending::amount))
-                    .getSum();
         }
     }
 
