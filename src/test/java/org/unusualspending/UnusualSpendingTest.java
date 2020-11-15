@@ -57,7 +57,7 @@ public class UnusualSpendingTest {
         );
 
         PaymentsRepository paymentsRepository = new InMemoryPaymentsRepository("AnyUser", currentMonthPayments, lastMonthPayments);
-        UnusualSpending unusualSpending = new UnusualSpending(paymentsRepository, new SpyAlertSystem(mailServer.getSmtp().createSession()));
+        UnusualSpending unusualSpending = new UnusualSpending(paymentsRepository, new EmailAlertSystem(mailServer.getSmtp().createSession()));
 
         unusualSpending.evaluate("AnyUser");
 
@@ -83,7 +83,7 @@ public class UnusualSpendingTest {
         );
 
         PaymentsRepository paymentsRepository = new InMemoryPaymentsRepository("AnyUser", currentMonthPayments, lastMonthPayments);
-        UnusualSpending unusualSpending = new UnusualSpending(paymentsRepository, new SpyAlertSystem(mailServer.getSmtp().createSession()));
+        UnusualSpending unusualSpending = new UnusualSpending(paymentsRepository, new EmailAlertSystem(mailServer.getSmtp().createSession()));
 
         unusualSpending.evaluate("AnyUser");
 
@@ -132,10 +132,10 @@ public class UnusualSpendingTest {
         }
     }
 
-    private static class SpyAlertSystem implements AlertSystem {
+    private static class EmailAlertSystem implements AlertSystem {
         private final Session smtpSession;
 
-        public SpyAlertSystem(Session smtpSession) {
+        public EmailAlertSystem(Session smtpSession) {
             this.smtpSession = smtpSession;
         }
 
