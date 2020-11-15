@@ -2,7 +2,6 @@ package org.unusualspending;
 
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetupTest;
-import org.hamcrest.MatcherAssert;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,8 +16,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
+import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 
 public class UnusualSpendingTest {
@@ -100,8 +101,8 @@ public class UnusualSpendingTest {
         MimeMessage message = mailServer.getReceivedMessagesForDomain("bar@example.com")[0];
 
         List<Spending> spendings = notification.allSpendings();
-        for (Spending ignored : spendings) {
-            MatcherAssert.assertThat(content(message), containsString("Fetch me via IMAP"));
+        for (Spending spending : spendings) {
+            assertThat(content(message), containsString(format("You spent $%d on %s", spending.amount(), spending.name())));
         }
     }
 
@@ -123,19 +124,27 @@ public class UnusualSpendingTest {
         @Override
         public void send(Notification notification) {
             try {
-                sendEMail();
+                sendEMail(composeMessageFrom(notification));
             } catch (MessagingException e) {
                 e.printStackTrace();
             }
         }
 
-        private void sendEMail() throws MessagingException {
+        private String composeMessageFrom(Notification notification) {
+            String body = "";
+            for (Spending spending : notification.allSpendings()) {
+                body = format("You spent $%d on %s", spending.amount(), spending.name()).concat(body);
+            }
+            return body;
+        }
+
+        private void sendEMail(String emailMessage) throws MessagingException {
             Message msg = new MimeMessage(smtpSession);
             msg.setFrom(new InternetAddress("foo@example.com"));
             msg.addRecipient(Message.RecipientType.TO,
                     new InternetAddress("bar@example.com"));
             msg.setSubject("Email sent to GreenMail via plain JavaMail");
-            msg.setText("Fetch me via IMAP");
+            msg.setText(emailMessage);
             Transport.send(msg);
         }
     }
