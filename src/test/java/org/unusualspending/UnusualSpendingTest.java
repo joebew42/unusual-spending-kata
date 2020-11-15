@@ -52,13 +52,13 @@ public class UnusualSpendingTest {
                 new Payment(3, "entertainment", "Movie Theater")
         );
 
-        User user = new User("AnyUser");
+        User user = new User("AnyUser", "anyUser@example.com");
         PaymentsRepository paymentsRepository = new InMemoryPaymentsRepository(user.userName(), currentMonthPayments, lastMonthPayments);
         UnusualSpending unusualSpending = new UnusualSpending(paymentsRepository, new EmailAlertSystem(mailServer.getSmtp().createSession()));
 
-        unusualSpending.evaluate(new User("AnyUser"));
+        unusualSpending.evaluate(user);
 
-        assertNoNotificationSent();
+        assertNoNotificationSentTo(user);
     }
 
     @Test
@@ -79,7 +79,7 @@ public class UnusualSpendingTest {
                 new Payment(5, "gardening", "Flowers")
         );
 
-        User user = new User("AnyUser");
+        User user = new User("AnyUser", "bar@example.com");
         PaymentsRepository paymentsRepository = new InMemoryPaymentsRepository(user.userName(), currentMonthPayments, lastMonthPayments);
         UnusualSpending unusualSpending = new UnusualSpending(paymentsRepository, new EmailAlertSystem(mailServer.getSmtp().createSession()));
 
@@ -93,8 +93,8 @@ public class UnusualSpendingTest {
         assertNotificationSent(notification);
     }
 
-    private void assertNoNotificationSent() {
-        assertEquals(0, mailServer.getReceivedMessagesForDomain("bar@example.com").length);
+    private void assertNoNotificationSentTo(User user) {
+        assertEquals(0, mailServer.getReceivedMessagesForDomain(user.email()).length);
     }
 
     private void assertNotificationSent(Notification notification) {
