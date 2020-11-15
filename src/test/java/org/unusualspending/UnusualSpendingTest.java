@@ -18,7 +18,9 @@ import java.util.List;
 
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.summarizingInt;
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 
@@ -99,10 +101,26 @@ public class UnusualSpendingTest {
 
     private void assertNotificationSent(Notification notification) {
         MimeMessage message = mailServer.getReceivedMessagesForDomain("bar@example.com")[0];
-
         List<Spending> spendings = notification.allSpendings();
+
+        assertThat(subject(message), is(format("Unusual spending of $%d detected!", total(spendings))));
+
         for (Spending spending : spendings) {
             assertThat(content(message), containsString(format("You spent $%d on %s", spending.amount(), spending.name())));
+        }
+    }
+
+    private long total(List<Spending> spendings) {
+        return spendings.stream()
+                .collect(summarizingInt(Spending::amount))
+                .getSum();
+    }
+
+    private String subject(MimeMessage message) {
+        try {
+            return message.getSubject();
+        } catch (MessagingException e) {
+            return "";
         }
     }
 
@@ -124,10 +142,15 @@ public class UnusualSpendingTest {
         @Override
         public void send(Notification notification) {
             try {
-                sendEMail(composeMessageFrom(notification));
+                String subject = composeSubjectFrom(notification);
+                sendEMail(subject, composeMessageFrom(notification));
             } catch (MessagingException e) {
                 e.printStackTrace();
             }
+        }
+
+        private String composeSubjectFrom(Notification notification) {
+            return format("Unusual spending of $%d detected!", total(notification.allSpendings()));
         }
 
         private String composeMessageFrom(Notification notification) {
@@ -138,14 +161,20 @@ public class UnusualSpendingTest {
             return body;
         }
 
-        private void sendEMail(String emailMessage) throws MessagingException {
+        private void sendEMail(String subject, String emailMessage) throws MessagingException {
             Message msg = new MimeMessage(smtpSession);
             msg.setFrom(new InternetAddress("foo@example.com"));
             msg.addRecipient(Message.RecipientType.TO,
                     new InternetAddress("bar@example.com"));
-            msg.setSubject("Email sent to GreenMail via plain JavaMail");
+            msg.setSubject(subject);
             msg.setText(emailMessage);
             Transport.send(msg);
+        }
+
+        private long total(List<Spending> spendings) {
+            return spendings.stream()
+                    .collect(summarizingInt(Spending::amount))
+                    .getSum();
         }
     }
 
