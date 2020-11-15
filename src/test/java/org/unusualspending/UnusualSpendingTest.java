@@ -52,10 +52,11 @@ public class UnusualSpendingTest {
                 new Payment(3, "entertainment", "Movie Theater")
         );
 
-        PaymentsRepository paymentsRepository = new InMemoryPaymentsRepository("AnyUser", currentMonthPayments, lastMonthPayments);
+        User user = new User("AnyUser");
+        PaymentsRepository paymentsRepository = new InMemoryPaymentsRepository(user.userName(), currentMonthPayments, lastMonthPayments);
         UnusualSpending unusualSpending = new UnusualSpending(paymentsRepository, new EmailAlertSystem(mailServer.getSmtp().createSession()));
 
-        unusualSpending.evaluate("AnyUser");
+        unusualSpending.evaluate(new User("AnyUser"));
 
         assertNoNotificationSent();
     }
@@ -78,12 +79,13 @@ public class UnusualSpendingTest {
                 new Payment(5, "gardening", "Flowers")
         );
 
-        PaymentsRepository paymentsRepository = new InMemoryPaymentsRepository("AnyUser", currentMonthPayments, lastMonthPayments);
+        User user = new User("AnyUser");
+        PaymentsRepository paymentsRepository = new InMemoryPaymentsRepository(user.userName(), currentMonthPayments, lastMonthPayments);
         UnusualSpending unusualSpending = new UnusualSpending(paymentsRepository, new EmailAlertSystem(mailServer.getSmtp().createSession()));
 
-        unusualSpending.evaluate("AnyUser");
+        unusualSpending.evaluate(user);
 
-        Notification notification = new Notification("AnyUser", new Spendings(
+        Notification notification = new Notification(user.userName(), new Spendings(
                 new Spending(3, "golf"),
                 new Spending(6, "entertainment")
         ));

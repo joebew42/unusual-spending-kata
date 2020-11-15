@@ -13,9 +13,9 @@ public class UnusualSpending {
         this.alertSystem = alertSystem;
     }
 
-    public void evaluate(String user) {
-        List<Payment> currentMonthPayments = paymentsRepository.currentMonth(user);
-        List<Payment> lastMonthPayments = paymentsRepository.lastMonth(user);
+    public void evaluate(User user) {
+        List<Payment> currentMonthPayments = paymentsRepository.currentMonth(user.userName());
+        List<Payment> lastMonthPayments = paymentsRepository.lastMonth(user.userName());
 
         Spendings unusual = spendingsFrom(currentMonthPayments).atLeast50PercentMoreThan(spendingsFrom(lastMonthPayments));
 
@@ -23,7 +23,7 @@ public class UnusualSpending {
             return;
         }
 
-        alertSystem.send(new Notification(user, unusual));
+        alertSystem.send(new Notification(user.userName(), unusual));
     }
 
 }
