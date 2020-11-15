@@ -30,4 +30,5 @@ The Credit Card Company
 # TODO
 
 * [F] Compose an e-mail notification
+    * [R] Replace the `Probe` with a FakeSMTPServer
 

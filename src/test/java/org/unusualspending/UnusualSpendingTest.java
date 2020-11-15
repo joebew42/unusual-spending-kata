@@ -41,7 +41,7 @@ public class UnusualSpendingTest {
 
         unusualSpending.evaluate("AnyUser");
 
-        assertTrue(probe.hasNotBeenCalled());
+        assertNoNotificationSent();
     }
 
     @Test
@@ -72,6 +72,14 @@ public class UnusualSpendingTest {
                 new Spending(6, "entertainment")
         ));
 
+        assertNotificationSent(notification);
+    }
+
+    private void assertNoNotificationSent() {
+        assertTrue(probe.hasNotBeenCalled());
+    }
+
+    private void assertNotificationSent(Notification notification) {
         assertTrue(probe.hasBeenCalledWith(notification));
     }
 
