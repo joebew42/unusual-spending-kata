@@ -15,8 +15,7 @@ import java.util.List;
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.summarizingInt;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 
@@ -98,14 +97,27 @@ public class UnusualSpendingTest {
     }
 
     private void assertNotificationSent(Notification notification) {
-        MimeMessage message = mailServer.getReceivedMessagesForDomain(notification.userEmail())[0];
+        MimeMessage receivedMessage = mailServer.getReceivedMessagesForDomain(notification.userEmail())[0];
         List<Spending> spendings = notification.allSpendings();
 
-        assertThat(subject(message), is(format("Unusual spending of $%d detected!", total(spendings))));
+        assertThat(subjectOf(receivedMessage), is(format("Unusual spending of $%d detected!", total(spendings))));
+
+        assertThat(contentOf(receivedMessage), startsWith("Hello card user!" +
+                "\r\n\r\n" +
+                "We have detected unusually high spending on your card in these categories:" +
+                "\r\n\r\n"
+        ));
 
         for (Spending spending : spendings) {
-            assertThat(content(message), containsString(format("You spent $%d on %s", spending.amount(), spending.name())));
+            assertThat(contentOf(receivedMessage), containsString(format("* You spent $%d on %s\r\n", spending.amount(), spending.name())));
         }
+
+        assertThat(contentOf(receivedMessage), endsWith("\r\n" +
+                "Love," +
+                "\r\n\r\n" +
+                "The Credit Card Company" +
+                "\r\n"
+        ));
     }
 
     private long total(List<Spending> spendings) {
@@ -114,7 +126,7 @@ public class UnusualSpendingTest {
                 .getSum();
     }
 
-    private String subject(MimeMessage message) {
+    private String subjectOf(MimeMessage message) {
         try {
             return message.getSubject();
         } catch (MessagingException e) {
@@ -122,7 +134,7 @@ public class UnusualSpendingTest {
         }
     }
 
-    private String content(MimeMessage message){
+    private String contentOf(MimeMessage message) {
         try {
             return (String) message.getContent();
         } catch (IOException | MessagingException e) {
