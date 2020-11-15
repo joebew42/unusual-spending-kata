@@ -20,16 +20,16 @@ class EmailAlertSystem implements AlertSystem {
     public void send(Notification notification) {
         EmailAlertMessage emailAlertMessage = new EmailAlertMessage(notification);
         try {
-            sendEmail(emailAlertMessage);
+            sendEmail(notification.userEmail(), emailAlertMessage);
         } catch (MessagingException e) {
             e.printStackTrace();
         }
     }
 
-    private void sendEmail(EmailAlertMessage alertMessage) throws MessagingException {
+    private void sendEmail(String email, EmailAlertMessage alertMessage) throws MessagingException {
         Message message = new MimeMessage(smtpSession);
         message.setFrom(new InternetAddress("foo@example.com"));
-        message.addRecipient(Message.RecipientType.TO, new InternetAddress("bar@example.com"));
+        message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
         message.setSubject(alertMessage.subject());
         message.setText(alertMessage.text());
         Transport.send(message);

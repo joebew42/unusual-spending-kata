@@ -79,7 +79,7 @@ public class UnusualSpendingTest {
                 new Payment(5, "gardening", "Flowers")
         );
 
-        User user = new User("AnyUser", "bar@example.com");
+        User user = new User("AnyUser", "anyUser@example.com");
         PaymentsRepository paymentsRepository = new InMemoryPaymentsRepository(user.userName(), currentMonthPayments, lastMonthPayments);
         UnusualSpending unusualSpending = new UnusualSpending(paymentsRepository, new EmailAlertSystem(mailServer.getSmtp().createSession()));
 
