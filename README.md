@@ -30,6 +30,5 @@ The Credit Card Company
 # TODO
 
 * [F] Compose an e-mail notification
-    * Introduce the e-mail address as detail of User
     * Compose the text and subject of the email as it's described in the requirements
 
