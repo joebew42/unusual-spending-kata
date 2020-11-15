@@ -1,5 +1,6 @@
 package org.unusualspending;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Notification {
@@ -9,6 +10,10 @@ public class Notification {
     public Notification(String user, Spendings spendings) {
         this.user = user;
         this.spendings = spendings;
+    }
+
+    public List<Spending> allSpendings() {
+        return spendings.all();
     }
 
     @Override

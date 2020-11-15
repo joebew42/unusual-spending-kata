@@ -2,6 +2,7 @@ package org.unusualspending;
 
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetupTest;
+import org.hamcrest.MatcherAssert;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,21 +13,20 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class UnusualSpendingTest {
 
-    private Probe<Notification> probe;
     private GreenMail mailServer;
 
     @Before
     public void setUp() {
-        probe = new Probe<>();
         mailServer = new GreenMail(ServerSetupTest.ALL);
         mailServer.start();
     }
@@ -54,7 +54,7 @@ public class UnusualSpendingTest {
         );
 
         PaymentsRepository paymentsRepository = new InMemoryPaymentsRepository("AnyUser", currentMonthPayments, lastMonthPayments);
-        UnusualSpending unusualSpending = new UnusualSpending(paymentsRepository, new SpyAlertSystem(probe, mailServer.getSmtp().createSession()));
+        UnusualSpending unusualSpending = new UnusualSpending(paymentsRepository, new SpyAlertSystem(mailServer.getSmtp().createSession()));
 
         unusualSpending.evaluate("AnyUser");
 
@@ -80,7 +80,7 @@ public class UnusualSpendingTest {
         );
 
         PaymentsRepository paymentsRepository = new InMemoryPaymentsRepository("AnyUser", currentMonthPayments, lastMonthPayments);
-        UnusualSpending unusualSpending = new UnusualSpending(paymentsRepository, new SpyAlertSystem(probe, mailServer.getSmtp().createSession()));
+        UnusualSpending unusualSpending = new UnusualSpending(paymentsRepository, new SpyAlertSystem(mailServer.getSmtp().createSession()));
 
         unusualSpending.evaluate("AnyUser");
 
@@ -94,20 +94,29 @@ public class UnusualSpendingTest {
 
     private void assertNoNotificationSent() {
         assertEquals(0, mailServer.getReceivedMessagesForDomain("bar@example.com").length);
-        assertTrue(probe.hasNotBeenCalled());
     }
 
     private void assertNotificationSent(Notification notification) {
-        assertEquals(1, mailServer.getReceivedMessagesForDomain("bar@example.com").length);
-        assertTrue(probe.hasBeenCalledWith(notification));
+        MimeMessage message = mailServer.getReceivedMessagesForDomain("bar@example.com")[0];
+
+        List<Spending> spendings = notification.allSpendings();
+        for (Spending ignored : spendings) {
+            MatcherAssert.assertThat(content(message), containsString("Fetch me via IMAP"));
+        }
+    }
+
+    private String content(MimeMessage message){
+        try {
+            return (String) message.getContent();
+        } catch (IOException | MessagingException e) {
+            return "";
+        }
     }
 
     private static class SpyAlertSystem implements AlertSystem {
-        private final Probe<Notification> probe;
         private final Session smtpSession;
 
-        public SpyAlertSystem(Probe<Notification> probe, Session smtpSession) {
-            this.probe = probe;
+        public SpyAlertSystem(Session smtpSession) {
             this.smtpSession = smtpSession;
         }
 
@@ -118,7 +127,6 @@ public class UnusualSpendingTest {
             } catch (MessagingException e) {
                 e.printStackTrace();
             }
-            probe.callWith(notification);
         }
 
         private void sendEMail() throws MessagingException {
@@ -129,27 +137,6 @@ public class UnusualSpendingTest {
             msg.setSubject("Email sent to GreenMail via plain JavaMail");
             msg.setText("Fetch me via IMAP");
             Transport.send(msg);
-        }
-    }
-
-    private static class Probe<T> {
-        private T calledWith = null;
-
-        public void callWith(T argument) {
-            calledWith = argument;
-        }
-
-        public boolean hasBeenCalledWith(T argument) {
-            if (calledWith == null) {
-                return false;
-            }
-
-            assertEquals(argument, calledWith);
-            return true;
-        }
-
-        public boolean hasNotBeenCalled() {
-            return calledWith == null;
         }
     }
 

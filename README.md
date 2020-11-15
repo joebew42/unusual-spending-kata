@@ -30,6 +30,7 @@ The Credit Card Company
 # TODO
 
 * [F] Compose an e-mail notification
+    * Compose a simple text that contains the spendings
     * Replace the `Probe` with a FakeSMTPServer and check that an email has been sent
     * Introduce the e-mail address as detail of User
     * Compose the text and subject of the email as described in the requirements

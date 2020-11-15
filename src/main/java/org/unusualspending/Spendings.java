@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
+import static java.util.List.copyOf;
 
 public class Spendings {
     static Spendings spendingsFrom(List<Payment> currentMonthPayments) {
@@ -35,6 +36,10 @@ public class Spendings {
             }
         }
         return new Spendings(unusualSpendings);
+    }
+
+    public List<Spending> all() {
+        return copyOf(spendings);
     }
 
     boolean hasNoSpendings() {
