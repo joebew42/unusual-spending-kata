@@ -21,6 +21,8 @@ import static org.junit.Assert.assertEquals;
 
 public class UnusualSpendingTest {
 
+    public static final User A_USER = new User("AnyUser", "anyUser@example.com");
+
     private GreenMail mailServer;
 
     @Before
@@ -51,13 +53,12 @@ public class UnusualSpendingTest {
                 new Payment(3, "entertainment", "Movie Theater")
         );
 
-        User user = new User("AnyUser", "anyUser@example.com");
-        PaymentsRepository paymentsRepository = new InMemoryPaymentsRepository(user.userName(), currentMonthPayments, lastMonthPayments);
+        PaymentsRepository paymentsRepository = new InMemoryPaymentsRepository(A_USER.userName(), currentMonthPayments, lastMonthPayments);
         UnusualSpending unusualSpending = new UnusualSpending(paymentsRepository, new EmailAlertSystem(mailServer.getSmtp().createSession()));
 
-        unusualSpending.evaluate(user);
+        unusualSpending.evaluate(A_USER);
 
-        assertNoNotificationSentTo(user);
+        assertNoNotificationSentTo(A_USER);
     }
 
     @Test
@@ -78,13 +79,12 @@ public class UnusualSpendingTest {
                 new Payment(5, "gardening", "Flowers")
         );
 
-        User user = new User("AnyUser", "anyUser@example.com");
-        PaymentsRepository paymentsRepository = new InMemoryPaymentsRepository(user.userName(), currentMonthPayments, lastMonthPayments);
+        PaymentsRepository paymentsRepository = new InMemoryPaymentsRepository(A_USER.userName(), currentMonthPayments, lastMonthPayments);
         UnusualSpending unusualSpending = new UnusualSpending(paymentsRepository, new EmailAlertSystem(mailServer.getSmtp().createSession()));
 
-        unusualSpending.evaluate(user);
+        unusualSpending.evaluate(A_USER);
 
-        Notification notification = new Notification(user, new Spendings(
+        Notification notification = new Notification(A_USER, new Spendings(
                 new Spending(3, "golf"),
                 new Spending(6, "entertainment")
         ));
