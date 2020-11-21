@@ -53,8 +53,8 @@ public class UnusualSpendingTest {
                 new Payment(3, "entertainment", "Movie Theater")
         );
 
-        PaymentsRepository paymentsRepository = new InMemoryPaymentsRepository(A_USER.userName(), currentMonthPayments, lastMonthPayments);
-        UnusualSpending unusualSpending = new UnusualSpending(paymentsRepository, new EmailAlertSystem(mailServer.getSmtp().createSession()));
+        Payments payments = new InMemoryPayments(A_USER.userName(), currentMonthPayments, lastMonthPayments);
+        UnusualSpending unusualSpending = new UnusualSpending(payments, new EmailAlertSystem(mailServer.getSmtp().createSession()));
 
         unusualSpending.evaluate(A_USER);
 
@@ -79,8 +79,8 @@ public class UnusualSpendingTest {
                 new Payment(5, "gardening", "Flowers")
         );
 
-        PaymentsRepository paymentsRepository = new InMemoryPaymentsRepository(A_USER.userName(), currentMonthPayments, lastMonthPayments);
-        UnusualSpending unusualSpending = new UnusualSpending(paymentsRepository, new EmailAlertSystem(mailServer.getSmtp().createSession()));
+        Payments payments = new InMemoryPayments(A_USER.userName(), currentMonthPayments, lastMonthPayments);
+        UnusualSpending unusualSpending = new UnusualSpending(payments, new EmailAlertSystem(mailServer.getSmtp().createSession()));
 
         unusualSpending.evaluate(A_USER);
 
@@ -150,11 +150,11 @@ public class UnusualSpendingTest {
         }
     }
 
-    public static class InMemoryPaymentsRepository implements PaymentsRepository {
+    public static class InMemoryPayments implements Payments {
         private final HashMap<String, List<Payment>> currentMonthPayments = new HashMap<>();
         private final HashMap<String, List<Payment>> lastMonthPayments = new HashMap<>();
 
-        public InMemoryPaymentsRepository(String user, List<Payment> currentMonth, List<Payment> lastMonth) {
+        public InMemoryPayments(String user, List<Payment> currentMonth, List<Payment> lastMonth) {
             currentMonthPayments.put(user, currentMonth);
             lastMonthPayments.put(user, lastMonth);
         }

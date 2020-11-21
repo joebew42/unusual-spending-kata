@@ -6,16 +6,16 @@ import static org.unusualspending.Spendings.spendingsFrom;
 
 public class UnusualSpending {
     private final AlertSystem alertSystem;
-    private final PaymentsRepository paymentsRepository;
+    private final Payments payments;
 
-    public UnusualSpending(PaymentsRepository paymentsRepository, AlertSystem alertSystem) {
-        this.paymentsRepository = paymentsRepository;
+    public UnusualSpending(Payments payments, AlertSystem alertSystem) {
+        this.payments = payments;
         this.alertSystem = alertSystem;
     }
 
     public void evaluate(User user) {
-        List<Payment> currentMonthPayments = paymentsRepository.currentMonth(user.userName());
-        List<Payment> lastMonthPayments = paymentsRepository.lastMonth(user.userName());
+        List<Payment> currentMonthPayments = payments.currentMonth(user.userName());
+        List<Payment> lastMonthPayments = payments.lastMonth(user.userName());
 
         Spendings unusualSpendings = spendingsFrom(currentMonthPayments).atLeast50PercentMoreThan(spendingsFrom(lastMonthPayments));
 
