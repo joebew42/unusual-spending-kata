@@ -53,7 +53,7 @@ public class UnusualSpendingTest {
                 new Payment(3, "entertainment", "Movie Theater")
         );
 
-        Payments payments = new InMemoryPayments(A_USER.userName(), currentMonthPayments, lastMonthPayments);
+        Payments payments = new PaymentsFor(A_USER.userName(), currentMonthPayments, lastMonthPayments);
         UnusualSpending unusualSpending = new UnusualSpending(payments, new EmailAlertSystem(mailServer.getSmtp().createSession()));
 
         unusualSpending.evaluate(A_USER);
@@ -79,7 +79,7 @@ public class UnusualSpendingTest {
                 new Payment(5, "gardening", "Flowers")
         );
 
-        Payments payments = new InMemoryPayments(A_USER.userName(), currentMonthPayments, lastMonthPayments);
+        Payments payments = new PaymentsFor(A_USER.userName(), currentMonthPayments, lastMonthPayments);
         UnusualSpending unusualSpending = new UnusualSpending(payments, new EmailAlertSystem(mailServer.getSmtp().createSession()));
 
         unusualSpending.evaluate(A_USER);
@@ -150,11 +150,11 @@ public class UnusualSpendingTest {
         }
     }
 
-    public static class InMemoryPayments implements Payments {
+    public static class PaymentsFor implements Payments {
         private final HashMap<String, List<Payment>> currentMonthPayments = new HashMap<>();
         private final HashMap<String, List<Payment>> lastMonthPayments = new HashMap<>();
 
-        public InMemoryPayments(String user, List<Payment> currentMonth, List<Payment> lastMonth) {
+        public PaymentsFor(String user, List<Payment> currentMonth, List<Payment> lastMonth) {
             currentMonthPayments.put(user, currentMonth);
             lastMonthPayments.put(user, lastMonth);
         }
