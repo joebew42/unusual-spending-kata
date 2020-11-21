@@ -93,11 +93,11 @@ public class UnusualSpendingTest {
     }
 
     private void assertNoNotificationSentTo(User user) {
-        assertEquals(0, mailServer.getReceivedMessagesForDomain(user.email()).length);
+        assertEquals(0, numberOfReceivedMessagesFor(user.email()));
     }
 
     private void assertNotificationSent(Notification notification) {
-        MimeMessage receivedMessage = mailServer.getReceivedMessagesForDomain(notification.userEmail())[0];
+        MimeMessage receivedMessage = readMessageFor(notification.userEmail());
         List<Spending> spendings = notification.allSpendings();
 
         assertThat(subjectOf(receivedMessage), is(format("Unusual spending of $%d detected!", total(spendings))));
@@ -118,6 +118,14 @@ public class UnusualSpendingTest {
                 "The Credit Card Company" +
                 "\r\n"
         ));
+    }
+
+    private int numberOfReceivedMessagesFor(String email) {
+        return mailServer.getReceivedMessagesForDomain(email).length;
+    }
+
+    private MimeMessage readMessageFor(String email) {
+        return mailServer.getReceivedMessagesForDomain(email)[0];
     }
 
     private long total(List<Spending> spendings) {
