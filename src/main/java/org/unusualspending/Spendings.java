@@ -27,7 +27,7 @@ public class Spendings {
         this.spendings = spendings;
     }
 
-    public Spendings atLeast50PercentMoreThan(Spendings otherSpendings) {
+    public Spendings thatAreAtLeast50PercentMoreThan(Spendings otherSpendings) {
         List<Spending> unusualSpendings = new ArrayList<>();
         for (Spending spending : spendings) {
             Optional<Spending> pastSpending = otherSpendings.findSpending(spending.name());
@@ -42,7 +42,7 @@ public class Spendings {
         return copyOf(spendings);
     }
 
-    boolean hasNoSpendings() {
+    boolean isEmpty() {
         return spendings.isEmpty();
     }
 

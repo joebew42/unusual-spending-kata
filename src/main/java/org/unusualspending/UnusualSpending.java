@@ -1,7 +1,5 @@
 package org.unusualspending;
 
-import java.util.List;
-
 public class UnusualSpending {
     private final AlertSystem alertSystem;
     private final Payments payments;
@@ -12,12 +10,12 @@ public class UnusualSpending {
     }
 
     public void evaluate(User user) {
-        Spendings currentMonthSpendings = Spendings.from(payments.currentMonth(user.userName()));
-        Spendings lastMonthSpendings = Spendings.from(payments.lastMonth(user.userName()));
+        Spendings currentMonthSpendings = Spendings.from(payments.ofCurrentMonth(user.userName()));
+        Spendings lastMonthSpendings = Spendings.from(payments.ofLastMonth(user.userName()));
 
-        Spendings unusualSpendings = currentMonthSpendings.atLeast50PercentMoreThan(lastMonthSpendings);
+        Spendings unusualSpendings = currentMonthSpendings.thatAreAtLeast50PercentMoreThan(lastMonthSpendings);
 
-        if (unusualSpendings.hasNoSpendings()) {
+        if (unusualSpendings.isEmpty()) {
             return;
         }
 

@@ -13,12 +13,12 @@ public class PaymentsFor implements Payments {
     }
 
     @Override
-    public List<Payment> currentMonth(String user) {
+    public List<Payment> ofCurrentMonth(String user) {
         return currentMonthPayments.get(user);
     }
 
     @Override
-    public List<Payment> lastMonth(String user) {
+    public List<Payment> ofLastMonth(String user) {
         return lastMonthPayments.get(user);
     }
 }
