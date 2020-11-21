@@ -7,7 +7,7 @@ import static java.util.Arrays.asList;
 import static java.util.List.copyOf;
 
 public class Spendings {
-    static Spendings spendingsFrom(List<Payment> currentMonthPayments) {
+    static Spendings from(List<Payment> currentMonthPayments) {
         List<Spending> spendings = currentMonthPayments.stream()
                 .collect(Collectors.groupingBy(Payment::spending, Collectors.summingInt(Payment::price)))
                 .entrySet().stream()
