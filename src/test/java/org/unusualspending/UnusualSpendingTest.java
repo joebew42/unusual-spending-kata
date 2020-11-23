@@ -55,7 +55,7 @@ public class UnusualSpendingTest {
                 new Payment(3, "entertainment", "Movie Theater")
         );
 
-        Payments payments = new PaymentsFor(A_USER.userName(), currentMonthPayments, lastMonthPayments);
+        Payments payments = new PaymentsFor(A_USER, currentMonthPayments, lastMonthPayments);
         UnusualSpending unusualSpending = new UnusualSpending(payments, alertSystem);
 
         unusualSpending.evaluate(A_USER);
@@ -81,7 +81,7 @@ public class UnusualSpendingTest {
                 new Payment(5, "gardening", "Flowers")
         );
 
-        Payments payments = new PaymentsFor(A_USER.userName(), currentMonthPayments, lastMonthPayments);
+        Payments payments = new PaymentsFor(A_USER, currentMonthPayments, lastMonthPayments);
         UnusualSpending unusualSpending = new UnusualSpending(payments, alertSystem);
 
         unusualSpending.evaluate(A_USER);

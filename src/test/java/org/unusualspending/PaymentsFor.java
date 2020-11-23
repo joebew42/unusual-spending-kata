@@ -7,9 +7,9 @@ public class PaymentsFor implements Payments {
     private final HashMap<String, List<Payment>> currentMonthPayments = new HashMap<>();
     private final HashMap<String, List<Payment>> lastMonthPayments = new HashMap<>();
 
-    public PaymentsFor(String user, List<Payment> currentMonth, List<Payment> lastMonth) {
-        currentMonthPayments.put(user, currentMonth);
-        lastMonthPayments.put(user, lastMonth);
+    public PaymentsFor(User user, List<Payment> currentMonth, List<Payment> lastMonth) {
+        currentMonthPayments.put(user.userName(), currentMonth);
+        lastMonthPayments.put(user.userName(), lastMonth);
     }
 
     @Override
