@@ -23,10 +23,13 @@ public class UnusualSpendingTest {
     public static final User A_USER = new User("AnyUser", "anyUser@example.com");
 
     private GreenMail mailServer;
+    private EmailAlertSystem alertSystem;
 
     @Before
     public void setUp() {
         mailServer = new GreenMail(ServerSetupTest.ALL);
+        alertSystem = new EmailAlertSystem(mailServer.getSmtp().createSession());
+
         mailServer.start();
     }
 
@@ -53,7 +56,7 @@ public class UnusualSpendingTest {
         );
 
         Payments payments = new PaymentsFor(A_USER.userName(), currentMonthPayments, lastMonthPayments);
-        UnusualSpending unusualSpending = new UnusualSpending(payments, new EmailAlertSystem(mailServer.getSmtp().createSession()));
+        UnusualSpending unusualSpending = new UnusualSpending(payments, alertSystem);
 
         unusualSpending.evaluate(A_USER);
 
@@ -79,7 +82,7 @@ public class UnusualSpendingTest {
         );
 
         Payments payments = new PaymentsFor(A_USER.userName(), currentMonthPayments, lastMonthPayments);
-        UnusualSpending unusualSpending = new UnusualSpending(payments, new EmailAlertSystem(mailServer.getSmtp().createSession()));
+        UnusualSpending unusualSpending = new UnusualSpending(payments, alertSystem);
 
         unusualSpending.evaluate(A_USER);
 
