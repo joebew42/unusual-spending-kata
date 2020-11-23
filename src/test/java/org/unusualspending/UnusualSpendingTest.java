@@ -40,7 +40,7 @@ public class UnusualSpendingTest {
 
     @Test
     public void do_not_send_any_notification_when_payments_by_spending_are_not_the_50_percent_more_of_the_past_ones() {
-        List<Payment> currentMonthPayments = asList(
+        List<Payment> paymentsOfTheCurrentMonth = asList(
                 new Payment(2, "golf", "Playing Golf with friends"),
                 new Payment(1, "golf", "Drink at Golf court"),
                 new Payment(1, "entertainment", "Popcorn"),
@@ -48,14 +48,14 @@ public class UnusualSpendingTest {
                 new Payment(3, "entertainment", "Movie Theater")
         );
 
-        List<Payment> lastMonthPayments = asList(
+        List<Payment> paymentsOfThePastMonth = asList(
                 new Payment(2, "golf", "Playing Golf with friends"),
                 new Payment(1, "golf", "Drink at Golf court"),
                 new Payment(3, "entertainment", "Movie Theater"),
                 new Payment(3, "entertainment", "Movie Theater")
         );
 
-        Payments payments = new PaymentsFor(A_USER, currentMonthPayments, lastMonthPayments);
+        Payments payments = new PaymentsFor(A_USER, paymentsOfTheCurrentMonth, paymentsOfThePastMonth);
         UnusualSpending unusualSpending = new UnusualSpending(payments, alertSystem);
 
         unusualSpending.evaluate(A_USER);
@@ -65,7 +65,7 @@ public class UnusualSpendingTest {
 
     @Test
     public void send_notification_when_payments_by_spending_are_the_50_percent_more_of_the_past_ones() {
-        List<Payment> currentMonthPayments = asList(
+        List<Payment> paymentsOfTheCurrentMonth = asList(
                 new Payment(2, "golf", "Playing Golf with friends"),
                 new Payment(1, "golf", "Drink at Golf court"),
                 new Payment(3, "entertainment", "Movie Theater"),
@@ -73,7 +73,7 @@ public class UnusualSpendingTest {
                 new Payment(5, "gardening", "Flowers")
         );
 
-        List<Payment> lastMonthPayments = asList(
+        List<Payment> paymentsOfThePastMonth = asList(
                 new Payment(1, "golf", "Drink at Golf court"),
                 new Payment(1, "golf", "Drink at Golf court"),
                 new Payment(1, "entertainment", "Popcorn"),
@@ -81,17 +81,17 @@ public class UnusualSpendingTest {
                 new Payment(5, "gardening", "Flowers")
         );
 
-        Payments payments = new PaymentsFor(A_USER, currentMonthPayments, lastMonthPayments);
+        Payments payments = new PaymentsFor(A_USER, paymentsOfTheCurrentMonth, paymentsOfThePastMonth);
         UnusualSpending unusualSpending = new UnusualSpending(payments, alertSystem);
 
         unusualSpending.evaluate(A_USER);
 
-        Notification notification = new Notification(A_USER, new Spendings(
+        Notification expectedNotification = new Notification(A_USER, new Spendings(
                 new Spending(3, "golf"),
                 new Spending(6, "entertainment")
         ));
 
-        assertNotificationSent(notification);
+        assertNotificationSent(expectedNotification);
     }
 
     private void assertNoNotificationSentTo(User user) {
